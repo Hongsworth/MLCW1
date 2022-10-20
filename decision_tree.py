@@ -44,9 +44,26 @@ def find_split():
 
     pass
 
+def split_dataset(dataset, split):
 
-def decision_tree_learning():
-    pass
+    return l_data, r_data
+
+def decision_tree_learning(dataset, depth = 0 ):
+
+    is_leaf = False
+
+    if is_leaf == True :
+        pass
+
+    else:
+        best_split = find_split()
+        left_dataset, right_dataset = split_dataset()
+        node = "put smth here"
+        left_branch, left_depth = decision_tree_learning(left_dataset, depth + 1)
+        right_branch, right_depth = decision_tree_learning(right_dataset, depth + 1)
+       
+        return (node, max(left_depth, right_depth))
+
 
 
 x = read_dataset("wifi_db/clean_dataset.txt")
