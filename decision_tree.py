@@ -34,7 +34,10 @@ def read_dataset(filepath):
 
     return (x, y, classes) # classes contains all possible labels
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f48c2f9e193c7a137f21a52cfa9a513bbe1e9b1a
 def find_info_gain():
     # implement the calculation to find the info gain for a split
     pass
@@ -53,8 +56,14 @@ def DECISION_TREE_LEARNING():
 (x, y, classes) = read_dataset("wifi_db/clean_dataset.txt")
 print(x.shape)
 print(y.shape)
+<<<<<<< HEAD
 print(classes) 
 
 for thing in y:
      print(thing)
+=======
+print(classes)
+
+
+>>>>>>> f48c2f9e193c7a137f21a52cfa9a513bbe1e9b1a
 
