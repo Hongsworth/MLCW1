@@ -30,9 +30,23 @@ def read_dataset(filepath):
     return x
 
 
+def find_info_gain():
+    # implement the calculation to find the info gain for a split
+    pass
+
+
+def find_split():
+    # declare new variable best_split and best_info_gain
+    # go through each possible split
+    # calculate the information gain for each split
+    # if the information gain is better for the current best_info_gain,
+    # reassign best_split to the current split
+
+    pass
+
+
+def decision_tree_learning():
+    pass
+
+
 x = read_dataset("wifi_db/clean_dataset.txt")
-
-
-for thing in x:
-    print(thing)
-# def decision_tree_learning():
