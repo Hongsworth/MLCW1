@@ -34,11 +34,6 @@ def read_dataset(filepath):
     return (x, y, classes)
 
 
-(x, y, classes) = read_dataset("wifi_db/clean_dataset.txt")
-print(x.shape)
-print(y.shape)
-print(classes)
-
 def find_info_gain():
     # implement the calculation to find the info gain for a split
     pass
@@ -53,4 +48,11 @@ def FIND_SPLLIT():
 
 def DECISION_TREE_LEARNING():
     pass
+
+(x, y, classes) = read_dataset("wifi_db/clean_dataset.txt")
+print(x.shape)
+print(y.shape)
+print(classes)
+
+
 
