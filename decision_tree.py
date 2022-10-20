@@ -1,6 +1,7 @@
+import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import default_rng
-import matplotlib.pyplot as plt
+
 
 def read_dataset(filepath):
     """ Read in the dataset from the specified filepath
