@@ -44,20 +44,28 @@ def find_split():
 
     pass
 
-def split_dataset(dataset, split, col_num):
-
+def split_dataset(dataset, split_val, col_num): 
+  # row numbers and column numbers are 0 indexed 
+    for row in dataset: 
+        print(row)
+        if row[col_num] == split_val:
+            l_data = dataset[ :col_num - 1 ]
+            r_data = dataset [col_num - 1 : ]
     return l_data, r_data
+
+def is_leaf():
+    pass 
 
 def decision_tree_learning(dataset, depth = 0 ):
 
-    is_leaf = False
+    is_leaf = is_leaf()
 
     if is_leaf == True :
         pass
 
     else:
-        for col_num in range (1,8,1):
-            best_split = find_split(col_num)
+        for col_num in range (0,7):
+            best_split = find_split()
             left_dataset, right_dataset = split_dataset()
             node = "put smth here"
             left_branch, left_depth = decision_tree_learning(left_dataset, depth + 1)
@@ -68,4 +76,5 @@ def decision_tree_learning(dataset, depth = 0 ):
 
 
 x = read_dataset("wifi_db/clean_dataset.txt")
+
 
