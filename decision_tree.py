@@ -44,15 +44,6 @@ def find_split():
 
     pass
 
-def split_dataset(dataset, split_val, col_num): 
-  # row numbers and column numbers are 0 indexed 
-    for row in dataset: 
-        print(row)
-        if row[col_num] == split_val:
-            l_data = dataset[ :col_num - 1 ]
-            r_data = dataset [col_num - 1 : ]
-    return l_data, r_data
-
 def is_leaf():
     pass 
 
