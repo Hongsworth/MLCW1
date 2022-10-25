@@ -1,5 +1,10 @@
 import numpy as np
 
+def entropy(x, y):
+    for i in range(7):
+        for j in range(4):
+            
+
 
 def FIND_SPLIT(x,y,room,col):
     b_gain = 0
