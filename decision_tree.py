@@ -4,11 +4,15 @@ import numpy as np
 from numpy.random import default_rng
 
 
+LABEL_COL = 7
+
+
 class Tree:
     def __init__(self):
         self.left = None
         self.right = None
-        self.data = None
+        self.attribute = None
+        self.value = None
 
 
 def read_dataset(filepath):
@@ -23,12 +27,14 @@ def read_dataset(filepath):
 
 
 def entropy(array):
+    if (len(array) == 0):
+        return 0
     ones = 0
     twos = 0
     threes = 0
     fours = 0
     for element in array:
-        match element[7]:
+        match element[LABEL_COL]:
             case 1:
                 ones += 1
             case 2:
@@ -37,8 +43,18 @@ def entropy(array):
                 threes += 1
             case 4:
                 fours += 1
-    return -(ones * np.log2(ones) + twos * np.log2(twos) + threes *
-             np.log2(threes) + fours * np.log2(fours))
+    ans = 0
+    if (ones != 0):
+        ans += ones * np.log2(ones)
+    if (twos != 0):
+        ans += twos * np.log2(twos)
+    if (threes != 0):
+        ans += threes * np.log2(threes)
+    if (fours != 0):
+        ans += fours * np.log2(fours)
+    ans /= len(array)
+
+    return ans
 
 
 def information_gain(array, split):
@@ -56,11 +72,12 @@ def find_split(array):
     highest_gain = 0
     l_dataset = []
     r_dataset = []
-    for column in range(7):
+    for column in range(len(array[0])-1):
         sort_column(array, column)
         for element in range(len(array)):
-            if (element == 0 or array[element] != array[element - 1]):
-                curr_gain = information_gain(element)
+            if (element == 0 or array[element][column] != array[element - 1]
+                    [column]):
+                curr_gain = information_gain(array, element)
                 if (curr_gain > highest_gain):
                     highest_gain = curr_gain
                     l_dataset = array[:element]
@@ -70,18 +87,22 @@ def find_split(array):
 
 def same_labels(training_dataset):
     for x in range(len(training_dataset) - 1):
-        if (training_dataset[x][7] != training_dataset[x+1][7]):
+        if (training_dataset[x][LABEL_COL] != training_dataset[x+1][LABEL_COL]):
             return False
     return True
 
 
 def decision_tree_learning(training_dataset, depth):
+    curr = Tree()
     if (same_labels(training_dataset)):
-        return (leaf, depth)
+        curr.value = training_dataset[0][LABEL_COL]
+        return (curr, depth)
     l_dataset, r_dataset = find_split(training_dataset)
-    l_branch, l_depth = decision_tree_learning(l_dataset, depth + 1)
-    r_branch, r_depth = decision_tree_learning(r_dataset, depth + 1)
-    return (node, max(l_depth, r_depth))
+    curr.left, l_depth = decision_tree_learning(l_dataset, depth + 1)
+    curr.right, r_depth = decision_tree_learning(r_dataset, depth + 1)
+    return (curr, max(l_depth, r_depth))
 
 
-x = read_dataset("wifi_db/clean_dataset.txt")
+dataset = read_dataset("wifi_db/clean_dataset.txt")
+
+root = decision_tree_learning(dataset, 0)
