@@ -84,5 +84,4 @@ def decision_tree_learning(training_dataset, depth):
     return (node, max(l_depth, r_depth))
 
 
-
 x = read_dataset("wifi_db/clean_dataset.txt")
