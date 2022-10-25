@@ -69,6 +69,8 @@ def sort_column(array, column):
 
 
 def find_split(array):
+    if (len(array) == 2):
+        return array[0], array[1]
     highest_gain = 0
     l_dataset = []
     r_dataset = []
@@ -94,6 +96,9 @@ def same_labels(training_dataset):
 
 def decision_tree_learning(training_dataset, depth):
     curr = Tree()
+    if (len(training_dataset.shape) == 1):
+        curr.value = training_dataset[LABEL_COL]
+        return (curr, depth)
     if (same_labels(training_dataset)):
         curr.value = training_dataset[0][LABEL_COL]
         return (curr, depth)
@@ -106,3 +111,4 @@ def decision_tree_learning(training_dataset, depth):
 dataset = read_dataset("wifi_db/clean_dataset.txt")
 
 root = decision_tree_learning(dataset, 0)
+print("stop")
