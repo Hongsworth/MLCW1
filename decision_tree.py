@@ -48,8 +48,23 @@ def create_confusion_matrix(predicted_labels, actual_labels):
 
     return conf_matrix
  
-def find_accuracy():
-    pass
+def find_accuracy(predicted_labels, actual_labels):
+
+  correct_samples = 0 
+  total_samples = len(predicted_labels)
+  accuracy = 0 
+  
+  conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
+  classes = np.unique(actual_labels)
+
+  for i in range(len(classes)):
+    for j in range(len(classes)):
+      if i == j:
+        correct_samples = correct_samples + conf_matrix[i,j]
+
+  accuracy = (correct_samples/total_samples) * 100 # accuracy is given as a percentage 
+
+  return accuracy 
 
 def decision_tree_learning(dataset, depth = 0 ):
 
