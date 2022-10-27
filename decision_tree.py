@@ -47,6 +47,19 @@ def find_split():
 def is_leaf():
     pass 
 
+def create_confusion_matrix(predicted_labels, actual_labels):
+
+    classes = np.unique(actual_labels)
+
+    conf_matrix = np.zeros((len(classes), len(classes)))
+  
+    for i in range(len(classes)):
+
+        for j in range(len(classes)):
+           conf_matrix[i, j] = np.sum((actual_labels == classes[i]) & (predicted_labels == classes[j]))
+
+    return conf_matrix
+  
 def decision_tree_learning(dataset, depth = 0 ):
 
     is_leaf = is_leaf()
