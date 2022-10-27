@@ -4,21 +4,6 @@ from numpy.random import default_rng
 
 
 def read_dataset(filepath):
-    """ Read in the dataset from the specified filepath
-
-    Args:
-        filepath (str): The filepath to the dataset file
-
-    Returns:
-        tuple: returns a tuple of (x, y, classes), each being a numpy array.
-               - x is a numpy array with shape (N, K),
-                   where N is the number of instances
-                   K is the number of features/attributes
-               - y is a numpy array with shape (N, ), and should be integers
-                   from 0 to C-1 where C is the number of classes
-               - classes : a numpy array with shape (C, ), which contains the
-                   unique class labels corresponding to the integers in y
-    """
 
     x = []
     for line in open(filepath):
@@ -47,6 +32,9 @@ def find_split():
 def is_leaf():
     pass 
 
+def evaluate(test_db, trained_tree):
+    pass 
+
 def create_confusion_matrix(predicted_labels, actual_labels):
 
     classes = np.unique(actual_labels)
@@ -59,7 +47,10 @@ def create_confusion_matrix(predicted_labels, actual_labels):
            conf_matrix[i, j] = np.sum((actual_labels == classes[i]) & (predicted_labels == classes[j]))
 
     return conf_matrix
-  
+ 
+def find_accuracy():
+    pass
+
 def decision_tree_learning(dataset, depth = 0 ):
 
     is_leaf = is_leaf()
