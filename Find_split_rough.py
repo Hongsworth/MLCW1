@@ -70,7 +70,7 @@ def sort_column(array, column):
 
 def find_split(array):
     if (len(array) == 2):
-        return array[0], array[1]
+        return array[0], array[1], 0, 0
     highest_gain = 0
     l_dataset = []
     r_dataset = []
@@ -84,14 +84,16 @@ def find_split(array):
                     highest_gain = curr_gain
                     l_dataset = array[:element]
                     r_dataset = array[element:]
-                    split = (array[element][column] + array[element - 1][column])/2
+                    split = (array[element][column] + array[element - 1]
+                             [column])/2
                     b_column = column
     return l_dataset, r_dataset, split, b_column
 
 
 def same_labels(training_dataset):
     for x in range(len(training_dataset) - 1):
-        if (training_dataset[x][LABEL_COL] != training_dataset[x+1][LABEL_COL]):
+        if (training_dataset[x][LABEL_COL] !=
+            training_dataset[x+1][LABEL_COL]):
             return False
     return True
 
@@ -107,7 +109,7 @@ def decision_tree_learning(training_dataset, depth):
     l_dataset, r_dataset, split, b_column = find_split(training_dataset)
     curr.left, l_depth = decision_tree_learning(l_dataset, depth + 1)
     curr.right, r_depth = decision_tree_learning(r_dataset, depth + 1)
-    curr.value = "x" + b_column + " < " + split
+    curr.value = "x" + str(b_column) + " < " + str(split)
     return (curr, max(l_depth, r_depth))
 
 
