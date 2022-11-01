@@ -7,15 +7,6 @@ from Find_split_rough import decision_tree_learning
 LABEL_COL = 7
 
 
-def evaluate(test_db, trained_tree):
-    predicted_labels = []
-    actual_labels = []
-    for data in test_db:
-        predicted_labels.push(eval_helper(data, trained_tree)) 
-        actual_labels.data[LABEL_COL]
-    return find_accuracy(predicted_labels, actual_labels)
-
-
 def eval_helper(data, node):
     if node.attribute is None:
         return node.value
@@ -30,6 +21,43 @@ def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
     shuffled_indices = random_generator.permutation(n_instances)
     split_indices = np.array_split(shuffled_indices, n_splits)
     return split_indices
+
+
+# ____________________________SPLITTING FUNCTIONS______________________________
+
+def split_dataset_10fold(dataset):
+    pass
+
+
+def split_labels_from_dataset(dataset):
+    labels = []
+    for row in dataset:
+        print(row)
+        labels.append(row[7])
+
+    return labels
+
+
+# ____________________________EVALUATION_FUNCTION______________________________
+
+def predict(node, row):
+    room = 0
+    # here we traverse through tree to find leaf
+    return room
+
+
+def evaluate(test_db, trained_tree):
+    predicted_labels = []
+    actual_labels = []
+    for data in test_db:
+        # passes in test data into tree and tree produces an array of predicted
+        # labels
+        predicted_labels.push(eval_helper(data, trained_tree))
+        actual_labels.push(data[LABEL_COL])
+
+    # pass the array of predicted labels and actual labels into the find
+    # accuracy function
+    return find_accuracy(predicted_labels, actual_labels)
 
 
 # _____________________________EVALUATION_METRICS_______________________________
@@ -114,4 +142,3 @@ def find_F1(class_num, predicted_labels, actual_labels):
     return f_measure
 
 
-# ____________________________BUILDING_MODEL_________________________________
