@@ -46,10 +46,11 @@ def evaluate(test_db, trained_tree):
 
     # pass the array of predicted labels and actual labels into the find
     # accuracy function
-    accuracy = find_accuracy(predicted_labels, actual_labels) 
+    accuracy = find_accuracy(predicted_labels, actual_labels)
     conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
-    
+
     return accuracy, conf_matrix
+
 
 # _____________________________EVALUATION_METRICS_______________________________
 
@@ -82,7 +83,6 @@ def find_accuracy(predicted_labels, actual_labels):
             if i == j:
                 correct_samples = correct_samples + conf_matrix[i, j]
 
-   
     accuracy = correct_samples/total_samples
 
     return accuracy
@@ -137,7 +137,7 @@ def main():
     dataset = read_dataset("filepath")
 
     size = len(dataset)
-    
+
     # split data into 10 folds
     split_indices = k_fold_split(10, size, dataset)
 
@@ -150,7 +150,7 @@ def main():
 
         # for validation:
         # validate_indicies = split_indicies[k+1] ??
-        # train_indices = np.hstack(split_indices[:k+1] + split_indices[k+2:]) ??
+        # train_indices = np.hstack(split_indices[:k+1] + split_indices[k+2:])
 
         # combine remaining splits as train    
         train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
@@ -162,7 +162,8 @@ def main():
 
     average_conf_matrix = cumalative_conf_matrix / 10
 
-    return avergae_conf_matrix
+    return average_conf_matrix
 
 
-    # in each loop: train tree, evaluate unpruned tree, run prune function. ensure we are aggregating the confusion matrix 
+# in each loop: train tree, evaluate unpruned tree, run prune function. ensure
+# we are aggregating the confusion matrix
