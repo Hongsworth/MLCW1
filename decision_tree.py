@@ -2,6 +2,7 @@
 # import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import default_rng
+import Find_split_rough
 
 # Fods
 
@@ -12,6 +13,8 @@ def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
      split_indices = np.array_split(shuffled_indices, n_splits)
      
      return split_indices
+# from numpy.random import default_rng
+
 
 
 # _____________________________EVALUATION_METRICS_______________________________
