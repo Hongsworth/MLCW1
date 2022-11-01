@@ -15,8 +15,40 @@ def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
      return split_indices
 # from numpy.random import default_rng
 
+#_____________________________SPLITTING FUNCTIONS______________________________
 
+def split_dataset_10fold(dataset):
+    pass
 
+def split_labels_from_dataset(dataset):
+    labels = []
+    for row in dataset:
+        print(row)
+        labels.append(row[7])
+    
+    return labels
+
+#_____________________________EVALUATION_FUNCTION______________________________
+def predict(node, row):
+    room = 0 
+    # here we traverse through tree to find leaf 
+    return room 
+    
+
+def evaluate(test_db, trained_tree):
+    accuracy = 0 
+    predicted = []
+    actual = []
+
+    actual = split_labels_from_dataset(test_db)
+
+    # passes in test data into tree and tree produces an array of predicted labels 
+    for row in test_db:
+       predicted.append(predict())
+
+    # pass the array of predicted lables and actual labels into the find accuracy function 
+    accuracy = find_accuracy(predicted,actual)
+    return accuracy 
 # _____________________________EVALUATION_METRICS_______________________________
 
 def create_confusion_matrix(predicted_labels, actual_labels):
@@ -99,4 +131,3 @@ def find_F1(class_num, predicted_labels, actual_labels):
     return f_measure
 
 
-# ____________________________BUILDING_MODEL_________________________________
