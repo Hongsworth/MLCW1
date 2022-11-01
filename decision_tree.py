@@ -7,14 +7,6 @@ from numpy.random import default_rng
 LABEL_COL = 7
 
 
-def eval_helper(data, node):
-    if node.attribute is None:
-        return node.value
-    if data[node.attribute] < node.value:
-        return eval_helper(data, node.left)
-    return eval_helper(data, node.right)
-
-
 # ____________________________SPLITTING FUNCTIONS______________________________
 
 def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
@@ -34,11 +26,12 @@ def split_labels_from_dataset(dataset):
 
 # ____________________________EVALUATION_FUNCTION______________________________
 
-def predict(node, row):
-    room = 0
-    # here we traverse through tree to find leaf
-    return room
-
+def eval_helper(data, node):
+    if node.attribute is None:
+        return node.value
+    if data[node.attribute] < node.value:
+        return eval_helper(data, node.left)
+    return eval_helper(data, node.right)
 
 def evaluate(test_db, trained_tree):
     predicted_labels = []
@@ -137,5 +130,9 @@ def find_F1(class_num, predicted_labels, actual_labels):
 
 
 def main():
+    
     dataset = read_dataset("filepath")
     # split data into 10 folds
+    # for loop through the combination of folds 
+    # in each loop: train tree, evaluate unpruned tree, run prune function. ensure we are aggregating the confusion matrix 
+    
