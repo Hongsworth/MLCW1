@@ -2,7 +2,7 @@
 # import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import default_rng
-from Find_split_rough import decision_tree_learning
+# from Find_split_rough import decision_tree_learning
 
 LABEL_COL = 7
 

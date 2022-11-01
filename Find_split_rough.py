@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 LABEL_COL = 7
 
@@ -114,5 +113,3 @@ dataset = read_dataset("wifi_db/clean_dataset.txt")
 
 root, depth = decision_tree_learning(dataset, 0)
 print("stop")
-
-plt.plot_tree(clf)
