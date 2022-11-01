@@ -47,7 +47,7 @@ def evaluate(test_db, trained_tree):
     accuracy = find_accuracy(predicted_labels, actual_labels) 
     conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
     
-    return accuarcy, conf_matrix
+    return accuracy, conf_matrix
 
 # _____________________________EVALUATION_METRICS_______________________________
 
