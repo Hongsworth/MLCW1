@@ -178,6 +178,7 @@ def eval_helper(data, node):
         return eval_helper(data, node.left)
     return eval_helper(data, node.right)
 
+
 def evaluate(test_db, trained_tree):
     predicted_labels = []
     actual_labels = []
@@ -189,7 +190,10 @@ def evaluate(test_db, trained_tree):
 
     # pass the array of predicted labels and actual labels into the find
     # accuracy function
-    return find_accuracy(predicted_labels, actual_labels)
+    accuracy = find_accuracy(predicted_labels, actual_labels)
+    conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
+
+    return accuracy, conf_matrix
 
 
 # _____________________________EVALUATION_METRICS_______________________________
@@ -223,8 +227,7 @@ def find_accuracy(predicted_labels, actual_labels):
             if i == j:
                 correct_samples = correct_samples + conf_matrix[i, j]
 
-    # accuracy is given as a percentage
-    accuracy = (correct_samples/total_samples) * 100
+    accuracy = correct_samples/total_samples
 
     return accuracy
 
@@ -258,7 +261,7 @@ def find_precision(class_num, predicted_labels, actual_labels):
         if sample == class_num:
             total_class_samples += 1
 
-    precision = correct_class_samples / total_class_samples 
+    precision = correct_class_samples / total_class_samples
 
     return precision
 
@@ -276,4 +279,35 @@ def find_F1(class_num, predicted_labels, actual_labels):
 
 def main():
     dataset = read_dataset("filepath")
+
+    size = len(dataset)
+
     # split data into 10 folds
+    split_indices = k_fold_split(10, size, dataset)
+
+    # for loop through the combination of folds
+    folds = []
+
+    for k in range(10):
+        # pick k as test
+        test_indices = split_indices[k]
+
+        # for validation:
+        # validate_indicies = split_indicies[k+1] ??
+        # train_indices = np.hstack(split_indices[:k+1] + split_indices[k+2:])
+
+        # combine remaining splits as train    
+        train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
+
+        trained_tree = decision_tree_learning(train_indices)
+        accuracy, conf_matrix = evaluate(test_indices, trained_tree) 
+
+        cumalative_conf_matrix += conf_matrix
+
+    average_conf_matrix = cumalative_conf_matrix / 10
+
+    return average_conf_matrix
+
+
+# in each loop: train tree, evaluate unpruned tree, run prune function. ensure
+# we are aggregating the confusion matrix
