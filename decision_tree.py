@@ -130,5 +130,9 @@ def find_F1(class_num, predicted_labels, actual_labels):
 
 
 def main():
+    
     dataset = read_dataset("filepath")
     # split data into 10 folds
+    # for loop through the combination of folds 
+    # in each loop: train tree, evaluate unpruned tree, run prune function. ensure we are aggregating the confusion matrix 
+    
