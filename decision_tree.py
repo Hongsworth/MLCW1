@@ -2,6 +2,7 @@
 # import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import default_rng
+from Find_split_rough import read_dataset
 # from Find_split_rough import decision_tree_learning
 
 LABEL_COL = 7
@@ -32,6 +33,7 @@ def eval_helper(data, node):
     if data[node.attribute] < node.value:
         return eval_helper(data, node.left)
     return eval_helper(data, node.right)
+
 
 def evaluate(test_db, trained_tree):
     predicted_labels = []
@@ -113,7 +115,7 @@ def find_precision(class_num, predicted_labels, actual_labels):
         if sample == class_num:
             total_class_samples += 1
 
-    precision = correct_class_samples / total_class_samples 
+    precision = correct_class_samples / total_class_samples
 
     return precision
 
@@ -130,9 +132,12 @@ def find_F1(class_num, predicted_labels, actual_labels):
 
 
 def main():
-    
     dataset = read_dataset("filepath")
+    split_dataset = k_fold_split(10, 2000, dataset)
+    for x in range(10):
+        training_dataset = []
+        split_dataset[x]
     # split data into 10 folds
-    # for loop through the combination of folds 
-    # in each loop: train tree, evaluate unpruned tree, run prune function. ensure we are aggregating the confusion matrix 
-    
+    # for loop through the combination of folds
+    # in each loop: train tree, evaluate unpruned tree, run prune function.
+    # ensure we are aggregating the confusion matrix
