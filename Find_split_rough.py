@@ -102,7 +102,8 @@ def decision_tree_learning(training_dataset, depth):
     if (same_labels(training_dataset)):
         curr.value = training_dataset[0][LABEL_COL]
         return (curr, depth)
-    l_dataset, r_dataset, curr.value, curr.attribute = find_split(training_dataset)
+    l_dataset, r_dataset, curr.value, curr.attribute = \
+        find_split(training_dataset)
     curr.left, l_depth = decision_tree_learning(l_dataset, depth + 1)
     curr.right, r_depth = decision_tree_learning(r_dataset, depth + 1)
     return (curr, max(l_depth, r_depth))

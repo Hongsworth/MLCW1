@@ -2,7 +2,25 @@
 # import matplotlib.pyplot as plt
 import numpy as np
 # from numpy.random import default_rng
-import Find_split_rough
+from Find_split_rough import decision_tree_learning
+
+LABEL_COL = 7
+
+
+def evaluate(test_db, trained_tree):
+    running_total = 0
+    for data in test_db:
+        if eval_helper(data, trained_tree) == data[LABEL_COL]:
+            running_total += 1
+    return running_total
+
+
+def eval_helper(data, node):
+    if node.attribute is None:
+        return node.value
+    if data[node.attribute] < node.value:
+        return eval_helper(data, node.left)
+    return eval_helper(data, node.right)
 
 
 # _____________________________EVALUATION_METRICS_______________________________
