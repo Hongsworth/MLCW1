@@ -5,6 +5,7 @@ from numpy.random import default_rng
 import Find_split_rough
 
 # Fods
+#_____________________________SPLITTING FUNCTIONS______________________________
 
 def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
      
@@ -14,11 +15,6 @@ def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
      
      return split_indices
 # from numpy.random import default_rng
-
-#_____________________________SPLITTING FUNCTIONS______________________________
-
-def split_dataset_10fold(dataset):
-    pass
 
 def split_labels_from_dataset(dataset):
     labels = []
@@ -129,5 +125,14 @@ def find_F1(class_num, predicted_labels, actual_labels):
     f_measure = (2*recall*precision)/(precision + recall)
 
     return f_measure
+
+def main():
+     dataset = read_dataset("filepath")
+      # split data into 10 folds 
+    
+     
+     
+     
+
 
 
