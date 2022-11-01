@@ -1,7 +1,17 @@
 
 # import matplotlib.pyplot as plt
 import numpy as np
-# from numpy.random import default_rng
+from numpy.random import default_rng
+
+# Fods
+
+def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
+     
+     shuffled_indices = random_generator.permutation(n_instances)
+     
+     split_indices = np.array_split(shuffled_indices, n_splits)
+     
+     return split_indices
 
 
 # _____________________________EVALUATION_METRICS_______________________________

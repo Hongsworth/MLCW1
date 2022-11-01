@@ -122,3 +122,5 @@ dataset = read_dataset("wifi_db/clean_dataset.txt")
 
 root = decision_tree_learning(dataset, 0)
 print("stop")
+
+tree.plot_tree(clf)
