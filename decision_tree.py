@@ -154,12 +154,16 @@ def main():
         # combine remaining splits as train    
         train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
 
-        trained_tree = decision_tree_learning(train_indices) #??
-        accuracy, conf_matrix = evaluate(test_indices, trained_tree) #??
+        trained_tree = decision_tree_learning(train_indices)
+        accuracy, conf_matrix = evaluate(test_indices, trained_tree) 
 
         cumalative_conf_matrix += conf_matrix
     
     average_conf_matrix = cumalative_conf_matrix / 10
+    
+    return avergae_conf_matrix
+
+main()
 
 
     # in each loop: train tree, evaluate unpruned tree, run prune function. ensure we are aggregating the confusion matrix 
