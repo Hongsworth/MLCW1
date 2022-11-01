@@ -15,18 +15,12 @@ def eval_helper(data, node):
     return eval_helper(data, node.right)
 
 
-# Fods
+# ____________________________SPLITTING FUNCTIONS______________________________
 
 def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
     shuffled_indices = random_generator.permutation(n_instances)
     split_indices = np.array_split(shuffled_indices, n_splits)
     return split_indices
-
-
-# ____________________________SPLITTING FUNCTIONS______________________________
-
-def split_dataset_10fold(dataset):
-    pass
 
 
 def split_labels_from_dataset(dataset):
@@ -142,3 +136,6 @@ def find_F1(class_num, predicted_labels, actual_labels):
     return f_measure
 
 
+def main():
+    dataset = read_dataset("filepath")
+    # split data into 10 folds
