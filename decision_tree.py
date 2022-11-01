@@ -7,14 +7,6 @@ from Find_split_rough import decision_tree_learning
 LABEL_COL = 7
 
 
-def eval_helper(data, node):
-    if node.attribute is None:
-        return node.value
-    if data[node.attribute] < node.value:
-        return eval_helper(data, node.left)
-    return eval_helper(data, node.right)
-
-
 # ____________________________SPLITTING FUNCTIONS______________________________
 
 def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
@@ -34,11 +26,12 @@ def split_labels_from_dataset(dataset):
 
 # ____________________________EVALUATION_FUNCTION______________________________
 
-def predict(node, row):
-    room = 0
-    # here we traverse through tree to find leaf
-    return room
-
+def eval_helper(data, node):
+    if node.attribute is None:
+        return node.value
+    if data[node.attribute] < node.value:
+        return eval_helper(data, node.left)
+    return eval_helper(data, node.right)
 
 def evaluate(test_db, trained_tree):
     predicted_labels = []
