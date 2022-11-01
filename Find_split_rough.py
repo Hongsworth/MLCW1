@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 LABEL_COL = 7
 
@@ -89,7 +90,7 @@ def find_split(array):
 def same_labels(training_dataset):
     for x in range(len(training_dataset) - 1):
         if (training_dataset[x][LABEL_COL] !=
-            training_dataset[x+1][LABEL_COL]):
+                training_dataset[x+1][LABEL_COL]):
             return False
     return True
 
@@ -113,3 +114,5 @@ dataset = read_dataset("wifi_db/clean_dataset.txt")
 
 root, depth = decision_tree_learning(dataset, 0)
 print("stop")
+
+plt.plot_tree(clf)

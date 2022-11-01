@@ -1,18 +1,19 @@
 
 # import matplotlib.pyplot as plt
 import numpy as np
-# from numpy.random import default_rng
+from numpy.random import default_rng
 from Find_split_rough import decision_tree_learning
 
 LABEL_COL = 7
 
 
 def evaluate(test_db, trained_tree):
-    running_total = 0
+    predicted_labels = []
+    actual_labels = []
     for data in test_db:
-        if eval_helper(data, trained_tree) == data[LABEL_COL]:
-            running_total += 1
-    return running_total
+        predicted_labels.push(eval_helper(data, trained_tree)) 
+        actual_labels.data[LABEL_COL]
+    return find_accuracy(predicted_labels, actual_labels)
 
 
 def eval_helper(data, node):
@@ -21,6 +22,14 @@ def eval_helper(data, node):
     if data[node.attribute] < node.value:
         return eval_helper(data, node.left)
     return eval_helper(data, node.right)
+
+
+# Fods
+
+def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
+    shuffled_indices = random_generator.permutation(n_instances)
+    split_indices = np.array_split(shuffled_indices, n_splits)
+    return split_indices
 
 
 # _____________________________EVALUATION_METRICS_______________________________
@@ -57,7 +66,7 @@ def find_accuracy(predicted_labels, actual_labels):
     # accuracy is given as a percentage
     accuracy = (correct_samples/total_samples) * 100
 
-    return accuracy 
+    return accuracy
 
 
 def find_recall(class_num, predicted_labels, actual_labels):
