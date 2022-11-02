@@ -35,15 +35,14 @@ def entropy(array):
     threes = 0
     fours = 0
     for element in array:
-        match element[LABEL_COL]:
-            case 1:
-                ones += 1
-            case 2:
-                twos += 1
-            case 3:
-                threes += 1
-            case 4:
-                fours += 1
+        if element[LABEL_COL] == 1:
+            ones += 1
+        elif element[LABEL_COL] == 2:
+            twos += 1
+        elif element[LABEL_COL] == 3:
+            threes += 1
+        elif element[LABEL_COL] == 4:
+            fours += 1
     ans = 0
     if (ones != 0):
         ans += ones * np.log2(ones)
