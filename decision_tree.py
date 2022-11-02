@@ -3,7 +3,7 @@
 import numpy as np
 from numpy.random import default_rng
 
-#_____________________________FIND SPLIT_______________________________________
+#_____________________________BUILDING TREE_______________________________________
 
 LABEL_COL = 7
 
@@ -144,12 +144,6 @@ def prune_tree(test_db, tree):
             del tree.left, tree.right
 
         
-
-
-
-
-
-
 # ____________________________SPLITTING FUNCTIONS______________________________
 
 def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
