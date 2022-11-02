@@ -220,8 +220,8 @@ def evaluate(test_db, trained_tree):
     for data in test_db:
         # passes in test data into tree and tree produces an array of predicted
         # labels
-        predicted_labels += eval_helper(data, trained_tree)
-        actual_labels += data[LABEL_COL]
+        predicted_labels.append(eval_helper(data, trained_tree))
+        actual_labels.append(data[LABEL_COL])
 
     # pass the array of predicted labels and actual labels into the find
     # accuracy function
@@ -331,7 +331,7 @@ def main(filename):
         # combine remaining splits as train
         train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
 
-        trained_tree, depth = decision_tree_learning(train_indices)
+        trained_tree, depth = decision_tree_learning(train_indices, 0)
         accuracy, conf_matrix = evaluate(test_indices, trained_tree)
 
         cumalative_conf_matrix += conf_matrix
