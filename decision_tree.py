@@ -1,9 +1,9 @@
 
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import default_rng
 
-#_____________________________BUILDING TREE_______________________________________
+# ____________________________BUILDING TREE_________________________________
 
 LABEL_COL = 7
 
@@ -116,21 +116,23 @@ def decision_tree_learning(training_dataset, depth):
 
 dataset = read_dataset("wifi_db/clean_dataset.txt")
 
-root, depth = decision_tree_learning(dataset, 0)
+#root, depth = decision_tree_learning(dataset, 0)
+plt.plot([1, 2], ["x < 20", "x < 30"], color='black')
+plt.show()
 print("stop")
 
 
-#_____________________________PRUNING FUNCTIONS________________________________
+# ____________________________PRUNING FUNCTIONS________________________________
 
 def prune_tree(test_db, tree):
-    
-    if (tree.left != None):
-        prune_tree (test_db, tree.left)
-    
-    if (tree.right != None):
-        prune_tree (test_db, tree.right)
 
-    if(tree.left.attribute == None and tree.right.attribute == None):
+    if tree.left is not None:
+        prune_tree(test_db, tree.left)
+
+    if tree.right is not None:
+        prune_tree(test_db, tree.right)
+
+    if tree.left.attribute is None and tree.right.attribute is None:
         l_acc = evaluate(test_db, tree.left)
         r_acc = evaluate(test_db, tree.right)
         if (l_acc < r_acc):
@@ -143,7 +145,7 @@ def prune_tree(test_db, tree):
             tree.attribute = None
             del tree.left, tree.right
 
-        
+
 # ____________________________SPLITTING FUNCTIONS______________________________
 
 def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
