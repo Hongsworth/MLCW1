@@ -127,11 +127,13 @@ def draw_tree(node, x, y, width):
     if node.attribute is None:
         draw_leaf(node.value, x, y)
         return
+    if width < 1:
+        width = 1
     draw_branch(node.attribute, node.value, x, y)
     xl = x - width / 2
-    yl = y + DEPTH
+    yl = y - DEPTH
     xr = x + width / 2
-    yr = y + DEPTH
+    yr = y - DEPTH
     draw_line(x, y, xl, yl)
     draw_tree(node.left, xl, yl, width / 2)
     draw_line(x, y, xr, yr)
@@ -342,7 +344,10 @@ def main(filename):
 
 
 filename = "wifi_db/clean_dataset.txt"
-main(filename)
+tree, depth = decision_tree_learning(read_dataset(filename), 0)
+draw_tree(tree, 0, 0, 10)
+plt.show()
+# main(filename)
 
 # in each loop: train tree, evaluate unpruned tree, run prune function. ensure
 # we are aggregating the confusion matrix
