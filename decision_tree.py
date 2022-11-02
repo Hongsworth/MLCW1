@@ -113,12 +113,29 @@ def decision_tree_learning(training_dataset, depth):
     return (curr, max(l_depth, r_depth))
 
 
-dataset = read_dataset("wifi_db/clean_dataset.txt")
+# ____________________________DRAWING TREE_________________________________
 
-#root, depth = decision_tree_learning(dataset, 0)
-plt.plot([1, 2], ["x < 20", "x < 30"], color='black')
-plt.show()
-print("stop")
+def draw_tree(node):
+    draw_branch
+
+
+def draw_branch(attribute, value, x, y):
+    feature = 'x' + str(int(attribute))
+    s = f'{feature} < {value}'
+    draw_text(s, x, y)
+
+
+def draw_leaf(label, x, y):
+    draw_text(str(label), x, y)
+
+
+def draw_line(x1, y1, x2, y2):
+    plt.plot([x1, x2], [y1, y2], color='black')
+
+
+def draw_text(s, x, y):
+    plt.text(x, y, s, ha='center', va='center',
+             bbox=dict(facecolor='white', pad=5.0))
 
 
 # ____________________________PRUNING FUNCTIONS________________________________
