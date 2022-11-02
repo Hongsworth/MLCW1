@@ -1,12 +1,13 @@
-
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import default_rng
 
-# ____________________________BUILDING TREE_________________________________
+seed = 60012
+rg = default_rng(seed)
+
+#_____________________________BUILDING TREE_______________________________________
 
 LABEL_COL = 7
-
 
 class Tree:
     def __init__(self):
@@ -106,72 +107,44 @@ def decision_tree_learning(training_dataset, depth):
     if (same_labels(training_dataset)):
         curr.value = training_dataset[0][LABEL_COL]
         return (curr, depth)
-    l_dataset, r_dataset, curr.value, curr.attribute = \
-        find_split(training_dataset)
+    l_dataset, r_dataset, curr.value, curr.attribute = find_split(training_dataset)
     curr.left, l_depth = decision_tree_learning(l_dataset, depth + 1)
     curr.right, r_depth = decision_tree_learning(r_dataset, depth + 1)
     return (curr, max(l_depth, r_depth))
 
-
-# ____________________________DRAWING TREE_________________________________
-
-def draw_tree(node):
-    draw_branch
-
-
-def draw_branch(attribute, value, x, y):
-    feature = 'x' + str(int(attribute))
-    s = f'{feature} < {value}'
-    draw_text(s, x, y)
-
-
-def draw_leaf(label, x, y):
-    draw_text(str(label), x, y)
-
-
-def draw_line(x1, y1, x2, y2):
-    plt.plot([x1, x2], [y1, y2], color='black')
-
-
-def draw_text(s, x, y):
-    plt.text(x, y, s, ha='center', va='center',
-             bbox=dict(facecolor='white', pad=5.0))
-
-
-# ____________________________PRUNING FUNCTIONS________________________________
+#_____________________________PRUNING FUNCTIONS________________________________
 
 def prune_tree(test_db, tree):
+    
+    if (tree.left != None):
+        prune_tree (test_db, tree.left)
+    
+    if (tree.right != None):
+        prune_tree (test_db, tree.right)
 
-    col = tree.atrribute
-    split_point = tree.value
+    if(tree.left.attribute == None and tree.right.attribute == None):
+        l_acc = evaluate(test_db, tree.left)
+        r_acc = evaluate(test_db, tree.right)
+        if (l_acc < r_acc):
+            tree.value = tree.right.value
+            tree.attribute = None
+            del tree.left, tree.right
 
-    sorted_db = sort_column(test_db, col)
-
-    for i in range(len(sorted_db)):
-        if (sorted_db[i][col] < split_point and sorted_db[i+1][col] >
-                split_point):
-            l_dataset = sorted_db[:i]
-            r_dataset = sorted_db[i:]
-
-    if (tree.left is None and tree.right is None):
-        tree.attribute = None
-        if (len(l_dataset) > len(r_dataset)):
-            tree.value = l_dataset[0][LABEL_COL]
         else:
-            tree.value = r_dataset[0][LABEL_COL]
+            tree.value = tree.left.value
+            tree.attribute = None
+            del tree.left, tree.right
 
-    if (tree.left is not None):
-        prune_tree(l_dataset, tree.left)
-
-    if (tree.right is not None):
-        prune_tree(r_dataset, tree.right)
-
-
+        
 # ____________________________SPLITTING FUNCTIONS______________________________
 
 def k_fold_split(n_splits, n_instances, random_generator=default_rng()):
+    # generate a random permutation of indices from 0 to n_instances
     shuffled_indices = random_generator.permutation(n_instances)
+
+    # split shuffled indices into almost equal sized splits
     split_indices = np.array_split(shuffled_indices, n_splits)
+
     return split_indices
 
 
@@ -292,16 +265,13 @@ def find_F1(class_num, predicted_labels, actual_labels):
     return f_measure
 
 
-def main():
-    dataset = read_dataset("filepath")
-
-    size = len(dataset)
-
+def main(filename):
+    
+    cumalative_conf_matrix = np.zeros((4,4))
+    dataset = read_dataset(filename)
+    
     # split data into 10 folds
-    split_indices = k_fold_split(10, size, dataset)
-
-    # for loop through the combination of folds
-    folds = []
+    split_indices = k_fold_split(10, dataset, rg)
 
     for k in range(10):
         # pick k as test
@@ -314,7 +284,7 @@ def main():
         # combine remaining splits as train    
         train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
 
-        trained_tree = decision_tree_learning(train_indices)
+        trained_tree = decision_tree_learning(train_indices, 0)
         accuracy, conf_matrix = evaluate(test_indices, trained_tree) 
 
         cumalative_conf_matrix += conf_matrix
@@ -323,6 +293,8 @@ def main():
 
     return average_conf_matrix
 
+filename = "clean_dataset.txt"
+main(filename)
 
 # in each loop: train tree, evaluate unpruned tree, run prune function. ensure
 # we are aggregating the confusion matrix
