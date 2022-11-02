@@ -73,8 +73,10 @@ def find_split(array):
     if (len(array) == 2):
         return array[0], array[1], 0, 0
     highest_gain = 0
-    l_dataset = []
-    r_dataset = []
+    l_dataset = array[:1]
+    r_dataset = array[1:]
+    split = 0
+    b_column = 0
     for column in range(len(array[0])-1):
         sort_column(array, column)
         for element in range(len(array)):
@@ -110,7 +112,7 @@ def decision_tree_learning(training_dataset, depth):
     l_dataset, r_dataset, curr.value, curr.attribute = find_split(training_dataset)
     curr.left, l_depth = decision_tree_learning(l_dataset, depth + 1)
     curr.right, r_depth = decision_tree_learning(r_dataset, depth + 1)
-    return (curr, max(l_depth, r_depth))
+    return curr, max(l_depth, r_depth)
 
 #_____________________________PRUNING FUNCTIONS________________________________
 
@@ -173,8 +175,8 @@ def evaluate(test_db, trained_tree):
     for data in test_db:
         # passes in test data into tree and tree produces an array of predicted
         # labels
-        predicted_labels.push(eval_helper(data, trained_tree))
-        actual_labels.push(data[LABEL_COL])
+        predicted_labels += eval_helper(data, trained_tree)
+        actual_labels += data[LABEL_COL]
 
     # pass the array of predicted labels and actual labels into the find
     # accuracy function
@@ -267,7 +269,7 @@ def find_F1(class_num, predicted_labels, actual_labels):
 
 def main(filename):
     
-    cumalative_conf_matrix = np.zeros((4,4))
+    cumalative_conf_matrix = np.zeros((4, 4))
     dataset = read_dataset(filename)
     
     # split data into 10 folds
@@ -284,8 +286,8 @@ def main(filename):
         # combine remaining splits as train    
         train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
 
-        trained_tree = decision_tree_learning(train_indices, 0)
-        accuracy, conf_matrix = evaluate(test_indices, trained_tree) 
+        trained_tree, depth = decision_tree_learning(train_indices, 0)
+        accuracy, conf_matrix = evaluate(test_indices, trained_tree)
 
         cumalative_conf_matrix += conf_matrix
 
@@ -293,7 +295,8 @@ def main(filename):
 
     return average_conf_matrix
 
-filename = "clean_dataset.txt"
+
+filename = "wifi_db/clean_dataset.txt"
 main(filename)
 
 # in each loop: train tree, evaluate unpruned tree, run prune function. ensure

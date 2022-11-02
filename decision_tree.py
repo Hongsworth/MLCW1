@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import default_rng
 
+seed = 60012
+rg = default_rng(seed)
+
 # ____________________________BUILDING TREE_________________________________
 
 LABEL_COL = 7
@@ -72,8 +75,10 @@ def find_split(array):
     if (len(array) == 2):
         return array[0], array[1], 0, 0
     highest_gain = 0
-    l_dataset = []
-    r_dataset = []
+    l_dataset = array[:1]
+    r_dataset = array[1:]
+    split = 0
+    b_column = 0
     for column in range(len(array[0])-1):
         sort_column(array, column)
         for element in range(len(array)):
@@ -100,7 +105,7 @@ def same_labels(training_dataset):
 
 def decision_tree_learning(training_dataset, depth):
     curr = Tree()
-    if (len(training_dataset.shape) == 1):
+    if (training_dataset.ndim == 1):
         curr.value = training_dataset[LABEL_COL]
         return (curr, depth)
     if (same_labels(training_dataset)):
@@ -110,13 +115,27 @@ def decision_tree_learning(training_dataset, depth):
         find_split(training_dataset)
     curr.left, l_depth = decision_tree_learning(l_dataset, depth + 1)
     curr.right, r_depth = decision_tree_learning(r_dataset, depth + 1)
-    return (curr, max(l_depth, r_depth))
+    return curr, max(l_depth, r_depth)
 
 
 # ____________________________DRAWING TREE_________________________________
 
-def draw_tree(node):
-    draw_branch
+DEPTH = 10
+
+
+def draw_tree(node, x, y, width):
+    if node.attribute is None:
+        draw_leaf(node.value, x, y)
+        return
+    draw_branch(node.attribute, node.value, x, y)
+    xl = x - width / 2
+    yl = y + DEPTH
+    xr = x + width / 2
+    yr = y + DEPTH
+    draw_line(x, y, xl, yl)
+    draw_tree(node.left, xl, yl, width / 2)
+    draw_line(x, y, xr, yr)
+    draw_tree(node.right, xr, yr, width / 2)
 
 
 def draw_branch(attribute, value, x, y):
@@ -201,8 +220,8 @@ def evaluate(test_db, trained_tree):
     for data in test_db:
         # passes in test data into tree and tree produces an array of predicted
         # labels
-        predicted_labels.push(eval_helper(data, trained_tree))
-        actual_labels.push(data[LABEL_COL])
+        predicted_labels += eval_helper(data, trained_tree)
+        actual_labels += data[LABEL_COL]
 
     # pass the array of predicted labels and actual labels into the find
     # accuracy function
@@ -293,16 +312,13 @@ def find_F1(class_num, predicted_labels, actual_labels):
     return f_measure
 
 
-def main():
-    dataset = read_dataset("filepath")
+def main(filename):
 
-    size = len(dataset)
+    cumalative_conf_matrix = np.zeros((4, 4))
+    dataset = read_dataset(filename)
 
     # split data into 10 folds
-    split_indices = k_fold_split(10, size, dataset)
-
-    # for loop through the combination of folds
-    folds = []
+    split_indices = k_fold_split(10, dataset, rg)
 
     for k in range(10):
         # pick k as test
@@ -315,8 +331,8 @@ def main():
         # combine remaining splits as train    
         train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
 
-        trained_tree = decision_tree_learning(train_indices)
-        accuracy, conf_matrix = evaluate(test_indices, trained_tree) 
+        trained_tree, depth = decision_tree_learning(train_indices)
+        accuracy, conf_matrix = evaluate(test_indices, trained_tree)
 
         cumalative_conf_matrix += conf_matrix
 
@@ -324,6 +340,9 @@ def main():
 
     return average_conf_matrix
 
+
+filename = "wifi_db/clean_dataset.txt"
+main(filename)
 
 # in each loop: train tree, evaluate unpruned tree, run prune function. ensure
 # we are aggregating the confusion matrix
