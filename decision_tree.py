@@ -84,8 +84,8 @@ def find_split(array):
                     highest_gain = curr_gain
                     l_dataset = array[:element]
                     r_dataset = array[element:]
-                    split = (array[element][column] + array[element - 1]
-                             [column])/2
+                    # TODO: Check if split is correct with the l and r dataset
+                    split = (array[element][column])
                     b_column = column
     return l_dataset, r_dataset, split, b_column
 
@@ -147,8 +147,9 @@ def prune_tree(test_db, tree):
 
     sorted_db = sort_column(test_db, col)
 
+    # TODO: Check is spliting the dataset is working correctly
     for i in range(len(sorted_db)):
-        if (sorted_db[i][col] < split_point and sorted_db[i+1][col] >
+        if (sorted_db[i][col] < split_point and sorted_db[i+1][col] >=
                 split_point):
             l_dataset = sorted_db[:i]
             r_dataset = sorted_db[i:]
