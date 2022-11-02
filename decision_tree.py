@@ -68,19 +68,18 @@ def information_gain(array, split):
 
 
 def sort_column(array, column):
-    array[array[:, column].argsort()]
+    return array[array[:, column].argsort()]
 
 
 def find_split(array):
-    if (len(array) == 2):
-        return array[0], array[1], 0, 0
+    array = sort_column(array, 0)
     highest_gain = 0
     l_dataset = array[:1]
     r_dataset = array[1:]
-    split = 0
+    split = array[1][0]
     b_column = 0
     for column in range(len(array[0])-1):
-        sort_column(array, column)
+        array = sort_column(array, column)
         for element in range(len(array)):
             if (element == 0 or array[element][column] != array[element - 1]
                     [column]):
@@ -314,6 +313,25 @@ def find_F1(class_num, predicted_labels, actual_labels):
     return f_measure
 
 
+def get_metrics(test_db, trained_tree):
+    predicted_labels = []
+    actual_labels = []
+    for data in test_db:
+        # passes in test data into tree and tree produces an array of predicted
+        # labels
+        predicted_labels.append(eval_helper(data, trained_tree))
+        actual_labels.append(data[LABEL_COL])
+
+    # pass the array of predicted labels and actual labels into the find
+    conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
+
+    accuracy = find_accuracy(predicted_labels, actual_labels)
+    for x in range(1, 5):
+        find_recall(x, predicted_labels, actual_labels)
+
+    return accuracy, conf_matrix
+
+
 def main(filename):
 
     cumalative_conf_matrix = np.zeros((4, 4))
@@ -344,12 +362,20 @@ def main(filename):
 
 
 filename = "wifi_db/clean_dataset.txt"
-"""
-tree, depth = decision_tree_learning(read_dataset(filename), 0)
+dataset = read_dataset(filename)
+tree, depth = decision_tree_learning(dataset, 0)
 draw_tree(tree, 0, 0, 10)
 plt.show()
+accuracy, conf_matrix = evaluate(dataset, tree)
+print(accuracy)
+
 """
 matrix = main(filename)
 print(matrix)
+
+filename = "wifi_db/noisy_dataset.txt"
+matrix = main(filename)
+print(matrix)
+"""
 # in each loop: train tree, evaluate unpruned tree, run prune function. ensure
 # we are aggregating the confusion matrix
