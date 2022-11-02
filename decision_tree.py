@@ -122,25 +122,31 @@ print("stop")
 #_____________________________PRUNING FUNCTIONS________________________________
 
 def prune_tree(test_db, tree):
+
+    col = tree.atrribute
+    split_point = tree.value
+
+    sorted_db = sort_column(test_db, col)
+
+    for i in range(len(sorted_db)):
+        if (sorted_db[i][col] < split_point and sorted_db[i+1][col] >split_point):
+            l_dataset = sorted_db[:i]
+            r_dataset = sorted_db[i:]
+
+    if (tree.left == None and tree.right == None):
+        tree.attribute = None
+        if (len(l_dataset) > len(r_dataset)):
+            tree.value = l_dataset[0][LABEL_COL]
+        else:
+            tree.value = r_dataset[0][LABEL_COL]
+
     
     if (tree.left != None):
-        prune_tree (test_db, tree.left)
+        prune_tree (l_dataset, tree.left)
     
     if (tree.right != None):
-        prune_tree (test_db, tree.right)
+        prune_tree (r_dataset, tree.right)
 
-    if(tree.left.attribute == None and tree.right.attribute == None):
-        l_acc = evaluate(test_db, tree.left)
-        r_acc = evaluate(test_db, tree.right)
-        if (l_acc < r_acc):
-            tree.value = tree.right.value
-            tree.attribute = None
-            del tree.left, tree.right
-
-        else:
-            tree.value = tree.left.value
-            tree.attribute = None
-            del tree.left, tree.right
 
         
 # ____________________________SPLITTING FUNCTIONS______________________________
