@@ -104,7 +104,7 @@ def same_labels(training_dataset):
 def decision_tree_learning(training_dataset, depth):
     curr = Tree()
     #if (len(training_dataset.shape) == 1):
-    if (np.shape(training_dataset)[0] == 1):
+    if (np.shape(training_dataset)[0] == 1): # finds number of rows
         curr.value = training_dataset[LABEL_COL]
         return (curr, depth)
     if (same_labels(training_dataset)):
@@ -267,6 +267,7 @@ def find_F1(class_num, predicted_labels, actual_labels):
 
     return f_measure
 
+#___________________________________________________MAIN_FUNCTION________________________________________________
 
 def main(filename):
     
@@ -277,6 +278,9 @@ def main(filename):
     split_indices = k_fold_split(10, dataset, rg)
 
     size = np.shape(split_indices[0])[1]
+    
+    # in each loop: train tree, evaluate unpruned tree, run prune function. ensure
+    # we are aggregating the confusion matrix
   
     for k in range(10):
         arr1 = np.empty((0,size), int)
@@ -308,8 +312,8 @@ def main(filename):
 
     return average_conf_matrix
 
+#__________________________________________________CODE_____________________________________________
 filename = "clean_dataset.txt"
 print(main(filename))
 
-# in each loop: train tree, evaluate unpruned tree, run prune function. ensure
-# we are aggregating the confusion matrix
+
