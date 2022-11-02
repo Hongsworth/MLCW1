@@ -103,8 +103,8 @@ def same_labels(training_dataset):
 
 def decision_tree_learning(training_dataset, depth):
     curr = Tree()
-    #if (len(training_dataset.shape) == 1):
-    if (np.shape(training_dataset)[0] == 1): # finds number of rows
+    if (len(training_dataset.shape) == 1):
+    #if (np.shape(training_dataset)[0] == 1): # finds number of rows
         curr.value = training_dataset[LABEL_COL]
         return (curr, depth)
     if (same_labels(training_dataset)):
