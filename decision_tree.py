@@ -328,7 +328,7 @@ def main(filename):
         # validate_indicies = split_indicies[k+1] ??
         # train_indices = np.hstack(split_indices[:k+1] + split_indices[k+2:])
 
-        # combine remaining splits as train    
+        # combine remaining splits as train
         train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
 
         trained_tree, depth = decision_tree_learning(train_indices)
