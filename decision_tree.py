@@ -3,8 +3,6 @@
 import numpy as np
 from numpy.random import default_rng
 
-LABEL_COL = 7
-
 #_____________________________FIND SPLIT_______________________________________
 
 LABEL_COL = 7
