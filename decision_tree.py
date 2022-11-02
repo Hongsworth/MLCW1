@@ -344,10 +344,12 @@ def main(filename):
 
 
 filename = "wifi_db/clean_dataset.txt"
+"""
 tree, depth = decision_tree_learning(read_dataset(filename), 0)
 draw_tree(tree, 0, 0, 10)
 plt.show()
-# main(filename)
-
+"""
+matrix = main(filename)
+print(matrix)
 # in each loop: train tree, evaluate unpruned tree, run prune function. ensure
 # we are aggregating the confusion matrix
