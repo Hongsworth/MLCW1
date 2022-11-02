@@ -70,6 +70,8 @@ def sort_column(array, column):
 
 
 def find_split(array):
+    split = 0 
+    b_column = 0
     if (len(array) == 2):
         return array[0], array[1], 0, 0
     highest_gain = 0
@@ -264,6 +266,7 @@ def find_F1(class_num, predicted_labels, actual_labels):
 
     return f_measure
 
+#_________________________________________MAIN FUNCTION____________________________________________
 
 def main(filename):
     
@@ -273,28 +276,43 @@ def main(filename):
     # split data into 10 folds
     split_indices = k_fold_split(10, dataset, rg)
 
+    size = np.shape(split_indices[0])[1]
+    
+    # in each loop: train tree, evaluate unpruned tree, run prune function. ensure
+    # we are aggregating the confusion matrix
+  
     for k in range(10):
+        arr1 = np.empty((0,size), int)
+        arr2 = np.empty((0,size), int)
+      
         # pick k as test
         test_indices = split_indices[k]
-
-        # for validation:
-        # validate_indicies = split_indicies[k+1] ??
-        # train_indices = np.hstack(split_indices[:k+1] + split_indices[k+2:])
-
-        # combine remaining splits as train    
-        train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
-
+        # combine remaining splits as train  
+        for i in range(k):
+          arr1 = np.append(arr1, split_indices[i], axis=0)
+          
+        for i in range(k+1, 10):
+          arr2 = np.append(arr2, split_indices[i], axis=0)
+        
+        train_indices = np.append(arr1, arr2, axis=0)
+  
+          # for validation:
+          # validate_indicies = split_indicies[k+1] ??
+          # train_indices = np.hstack(split_indices[:k+1] + split_indices[k+2:])
+  
+          # combine remaining splits as train    
+         
+  
         trained_tree = decision_tree_learning(train_indices, 0)
         accuracy, conf_matrix = evaluate(test_indices, trained_tree) 
-
         cumalative_conf_matrix += conf_matrix
 
     average_conf_matrix = cumalative_conf_matrix / 10
 
     return average_conf_matrix
 
-filename = "clean_dataset.txt"
-main(filename)
+#_____________________________________RUNNING CODE_______________________________________________________
 
-# in each loop: train tree, evaluate unpruned tree, run prune function. ensure
-# we are aggregating the confusion matrix
+filename = "clean_dataset.txt"
+print(main(filename))
+
