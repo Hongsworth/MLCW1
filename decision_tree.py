@@ -7,6 +7,7 @@ seed = 60012
 rg = default_rng(seed)
 LABEL_COL = 7
 
+
 # ____________________________BUILDING TREE_________________________________
 
 class Tree:
@@ -159,8 +160,10 @@ def draw_text(s, x, y):
 # ____________________________PRUNING FUNCTIONS________________________________
 
 def prune_tree(test_db, tree):
+    if tree.attribute is None:
+        return
 
-    col = tree.atrribute
+    col = tree.attribute
     split_point = tree.value
     root = tree
 
@@ -170,26 +173,25 @@ def prune_tree(test_db, tree):
 
     # TODO: Check is spliting the dataset is working correctly
     for i in range(len(sorted_db)):
-        if (sorted_db[i][col] < split_point and sorted_db[i+1][col] >=
-                split_point):
+        if sorted_db[i][col] == split_point:
             l_dataset = sorted_db[:i]
             r_dataset = sorted_db[i:]
+            break
 
-    if (tree.left is None and tree.right is None):
+    if (tree.left.attribute is None and tree.right.attribute is None):
         tree.attribute = None
         if (len(l_dataset) > len(r_dataset)):
             tree.value = l_dataset[0][LABEL_COL]
         else:
             tree.value = r_dataset[0][LABEL_COL]
         n_acc, n_conf = evaluate(test_db, root)
-        if(n_acc > acc):
+        if (n_acc > acc):
             del tree.left, tree.right
             return root, n_acc, n_conf
         else:
             tree.attribute = col
             tree.value = split_point
             return root, acc, conf
-            
 
     if (tree.left is not None):
         prune_tree(l_dataset, tree.left)
@@ -378,6 +380,8 @@ def main(filename):
 
         trained_tree, depth = decision_tree_learning(train_indices, 0)
         accuracy, conf_matrix = evaluate(test_indices, trained_tree)
+        tree, acc, conf = prune_tree(train_indices, trained_tree)
+        print(acc)
 
         cumalative_conf_matrix += conf_matrix
 
