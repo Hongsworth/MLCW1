@@ -23,7 +23,11 @@ Our decision tree can be run by running the decision_tree.py file, which will ou
 ## prune_tree()
 
 ## get_metrics()
-
+- _Parameters of the Function: `test_db`, `trained_tree`_
+- _Values Returned: `accuracy`, `conf_matrix`, `recall`, `precision`, `f1_measure`_
+- `get_metrics(test_db, trained_tree)` is a function that returns values for Accuracy, Recall, Precision and F1 Measure by taking in the trained tree and the test data we wish to test the decision tree on. 
+- Values for Recall, Precision and F1 Measure are retuned within an array where each element of the array corresponds to the labels: Room 1 through to Room 4 respectively. 
+- Within our code, we utilise this function to return the metrics for the averaged matrix from the pruned and unpruned tree. 
 ## draw_tree()
 
 ## How to Run Our Code:
