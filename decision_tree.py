@@ -159,17 +159,16 @@ def draw_text(s, x, y):
 
 # ____________________________PRUNING FUNCTIONS________________________________
 
-def prune_tree(test_db, tree):
+def prune_tree(validate_db, train_db, tree, root, pruned):
     if tree.attribute is None:
         return
 
     col = tree.attribute
     split_point = tree.value
-    root = tree
 
-    acc, conf = evaluate(test_db, tree)
+    acc, conf = evaluate(validate_db, root)
 
-    sorted_db = sort_column(test_db, col)
+    sorted_db = sort_column(train_db, col)
 
     # TODO: Check is spliting the dataset is working correctly
     for i in range(len(sorted_db)):
@@ -184,20 +183,20 @@ def prune_tree(test_db, tree):
             tree.value = l_dataset[0][LABEL_COL]
         else:
             tree.value = r_dataset[0][LABEL_COL]
-        n_acc, n_conf = evaluate(test_db, root)
+        n_acc, n_conf = evaluate(validate_db, root)
         if (n_acc > acc):
             del tree.left, tree.right
-            return root, n_acc, n_conf
+            pruned[0] = True
+            return
         else:
             tree.attribute = col
             tree.value = split_point
-            return root, acc, conf
 
     if (tree.left is not None):
-        prune_tree(l_dataset, tree.left)
+        prune_tree(validate_db, l_dataset, tree.left, root, pruned)
 
     if (tree.right is not None):
-        prune_tree(r_dataset, tree.right)
+        prune_tree(validate_db, r_dataset, tree.right, root, pruned)
 
 
 # ____________________________SPLITTING FUNCTIONS______________________________
@@ -367,6 +366,8 @@ def main(filename):
         # pick k as test
         test_indices = split_indices[k]
 
+        validate_indices = split_indices[k+1]
+
         # combine remaining splits as train
         train_indices = None
         for i in range(10):
@@ -380,8 +381,13 @@ def main(filename):
 
         trained_tree, depth = decision_tree_learning(train_indices, 0)
         accuracy, conf_matrix = evaluate(test_indices, trained_tree)
-        tree, acc, conf = prune_tree(train_indices, trained_tree)
-        print(acc)
+
+        pruned = [True]
+        while pruned[0]:
+            pruned = [False]
+            prune_tree(validate_indices, train_indices, trained_tree,
+                       trained_tree, pruned)
+            print("looped")
 
         cumalative_conf_matrix += conf_matrix
 
@@ -389,7 +395,8 @@ def main(filename):
 
     return average_conf_matrix
 
-# _________________________________________RUN CODE___________________________________________
+
+# __________________________________RUN CODE_______________________________
 
 filename = "wifi_db/clean_dataset.txt"
 """
