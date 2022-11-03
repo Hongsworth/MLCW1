@@ -240,6 +240,10 @@ def evaluate(test_db, trained_tree):
 
     return accuracy, conf_matrix
 
+def tree_depth(tree):
+    if tree.attribute is None:
+        return 0
+    return 1 + max(tree_depth(tree.left), tree_depth(tree.right))
 
 # _____________________________EVALUATION_METRICS_______________________________
 
@@ -371,13 +375,11 @@ def main(filename):
     cumalative_recall_unpruned = []
     cumalative_precision_unpruned = []
     cumalative_f1_measure_unpruned = []
- 
+
     cumalative_accuracy_pruned = 0
     cumalative_recall_pruned = []
     cumalative_precision_pruned = []
     cumalative_f1_measure_pruned = []
-
-
 
     dataset = read_dataset(filename)
 
@@ -404,7 +406,8 @@ def main(filename):
                                            axis=0)
 
         trained_tree, depth = decision_tree_learning(train_indices, 0)
-        accuracy_unpruned, conf_matrix, recall_unpruned, precision_unpruned, f1_measure_unpruned = get_metrics(test_indices, trained_tree)
+        accuracy_unpruned, conf_matrix, recall_unpruned, precision_unpruned, \
+            f1_measure_unpruned = get_metrics(test_indices, trained_tree)
 
         pruned = [True]
         while pruned[0]:
@@ -412,34 +415,50 @@ def main(filename):
             prune_tree(validate_indices, train_indices, trained_tree,
                        trained_tree, pruned)
 
-        combined_validate_indices = np.concatenate((validate_indices, train_indices),axis = 0)
-        
-        accuracy_pruned, pruned_conf_matrix, recall_pruned, precision_pruned, f1_measure_pruned = get_metrics(combined_validate_indices, trained_tree)
-        
+        accuracy_pruned, pruned_conf_matrix, recall_pruned, precision_pruned, \
+            f1_measure_pruned = get_metrics(validate_indices,
+                                            trained_tree)
+
         cumalative_conf_matrix_pruned += pruned_conf_matrix
         cumalative_conf_matrix_unpruned += conf_matrix
         cumalative_accuracy_unpruned += accuracy_unpruned
         cumalative_accuracy_pruned += accuracy_pruned
-        cumalative_recall_unpruned += recall_unpruned
-        cumalative_recall_pruned += recall_pruned
-        cumalative_precision_unpruned += precision_unpruned
-        cumalative_precision_pruned += precision_pruned
-        cumalative_f1_measure_unpruned += f1_measure_unpruned
-        cumalative_f1_measure_pruned += f1_measure_pruned
-
+        if k == 0:
+            cumalative_recall_unpruned = recall_unpruned
+            cumalative_recall_pruned = recall_pruned
+            cumalative_precision_unpruned = precision_unpruned
+            cumalative_precision_pruned = precision_pruned
+            cumalative_f1_measure_unpruned = f1_measure_unpruned
+            cumalative_f1_measure_pruned = f1_measure_pruned
+        else:
+            cumalative_recall_unpruned = [sum(x) for x in zip(
+                cumalative_recall_unpruned, recall_unpruned)]
+            cumalative_recall_pruned = [sum(x) for x in zip(
+                cumalative_recall_pruned, recall_pruned)]
+            cumalative_precision_unpruned = [sum(x) for x in zip(
+                cumalative_precision_unpruned, precision_unpruned)]
+            cumalative_precision_pruned = [sum(x) for x in zip(
+                cumalative_precision_pruned, precision_pruned)]
+            cumalative_f1_measure_unpruned = [sum(x) for x in zip(
+                cumalative_f1_measure_unpruned, f1_measure_unpruned)]
+            cumalative_f1_measure_pruned = [sum(x) for x in zip(
+                cumalative_f1_measure_pruned, f1_measure_pruned)]
 
     # calculate averaged matrix for both pruned and unpruned data
     average_conf_matrix_unpruned = cumalative_conf_matrix_unpruned / 10
     average_conf_matrix_pruned = cumalative_conf_matrix_pruned / 10
     average_accuracy_unpruned = cumalative_accuracy_unpruned / 10
     average_accuracy_pruned = cumalative_accuracy_pruned / 10
-    average_recall_unpruned = cumalative_recall_unpruned / 10
-    average_recall_pruned = cumalative_recall_pruned / 10
-    average_precision_unpruned = cumalative_precision_unpruned / 10 
-    average_precision_pruned = cumalative_precision_pruned / 10
-    average_f1_measure_unpruned = cumalative_f1_measure_unpruned / 10
-    average_f1_measure_pruned = cumalative_f1_measure_pruned / 10
+    average_recall_unpruned = [x / 10 for x in cumalative_recall_unpruned]
+    average_recall_pruned = [x / 10 for x in cumalative_recall_pruned]
+    average_precision_unpruned = [x / 10 for x in
+                                  cumalative_precision_unpruned]
+    average_precision_pruned = [x / 10 for x in cumalative_precision_pruned]
+    average_f1_measure_unpruned = [x / 10 for x in
+                                   cumalative_f1_measure_unpruned]
+    average_f1_measure_pruned = [x / 10 for x in cumalative_f1_measure_pruned]
 
+    depth = tree_depth(trained_tree)
     # get classification metrics for each averaged matrix
 
     # accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
@@ -450,10 +469,11 @@ def main(filename):
     #     precision_pruned, f1_measure_pruned = \
     #     get_metrics(test_indices, average_conf_matrix_pruned)
 
-    return average_accuracy_unpruned, average_conf_matrix_unpruned, average_recall_unpruned, \
-        average_precision_unpruned, average_f1_measure_unpruned, average_accuracy_pruned, \
-        average_conf_matrix_pruned, average_recall_pruned, average_precision_pruned, \
-        average_f1_measure_pruned
+    return average_accuracy_unpruned, average_conf_matrix_unpruned, \
+        average_recall_unpruned, average_precision_unpruned, \
+        average_f1_measure_unpruned, average_accuracy_pruned, \
+        average_conf_matrix_pruned, average_recall_pruned, \
+        average_precision_pruned, average_f1_measure_pruned,depth
 
 
 # __________________________________RUN CODE_______________________________
@@ -471,7 +491,7 @@ print(accuracy)
 accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
     precision_unpruned, f1_measure_unpruned, accuracy_pruned, \
     average_conf_matrix_pruned, recall_pruned, precision_pruned, \
-    f1_measure_pruned = main(filename)
+    f1_measure_pruned, depth = main(filename)
 
 print("Confusion Matrix and Metrics for Unpruned Tree")
 print("Confusion Matrix: ")
@@ -497,6 +517,8 @@ print("Precision: ")
 print(precision_pruned)
 print("F1 Measure: ")
 print(f1_measure_pruned)
+print("Depth: ")
+print(depth)
 
 
 """
