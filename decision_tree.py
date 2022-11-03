@@ -332,6 +332,10 @@ def get_metrics(test_db, trained_tree):
     return accuracy, conf_matrix
 
 
+def flatten(list):
+    return [item for sublist in list for item in sublist]
+
+
 def main(filename):
 
     cumalative_conf_matrix = np.zeros((4, 4))
@@ -344,12 +348,17 @@ def main(filename):
         # pick k as test
         test_indices = split_indices[k]
 
-        # for validation:
-        # validate_indicies = split_indicies[k+1] ??
-        # train_indices = np.hstack(split_indices[:k+1] + split_indices[k+2:])
-
         # combine remaining splits as train
-        train_indices = np.hstack(split_indices[:k] + split_indices[k+1:])
+        train_indices = None
+        for i in range(10):
+            if i == k or i == k + 1 or (i == 0 and k == 9):
+                continue
+            if train_indices is None:
+                train_indices = split_indices[i]
+                continue
+            train_indices = np.concatenate((train_indices, split_indices[i]),
+                                           axis=0)
+            # train_indices = train_indices + split_indices[i]
 
         trained_tree, depth = decision_tree_learning(train_indices, 0)
         accuracy, conf_matrix = evaluate(test_indices, trained_tree)
@@ -362,6 +371,7 @@ def main(filename):
 
 
 filename = "wifi_db/clean_dataset.txt"
+"""
 dataset = read_dataset(filename)
 tree, depth = decision_tree_learning(dataset, 0)
 draw_tree(tree, 0, 0, 10)
@@ -376,6 +386,6 @@ print(matrix)
 filename = "wifi_db/noisy_dataset.txt"
 matrix = main(filename)
 print(matrix)
-"""
+
 # in each loop: train tree, evaluate unpruned tree, run prune function. ensure
 # we are aggregating the confusion matrix
