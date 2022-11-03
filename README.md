@@ -34,9 +34,10 @@ TO DO: add some information here about the function
 
 ## prune_tree()
 - _Parameters of the Function:`validate_db`, `train_db`, `tree`, `root`, `pruned`_
-- _Values Returned:_
-
-TO DO: add some information here about the function
+- _Values Returned:N/A_
+- `prune_tree(validate_db, train_db, tree, root, pruned)` works by intially traversing to the bottom of the decison tree and by working bottom up.
+- The function removes the bottom-most node  of the tree and  then checks if perfomance of the tree has improved using the validation set. 
+- If the perfomance of tree has improved by removing the node, the function will keep the new version of the tree. If not, the function will replace the node back again. 
 
 ## get_metrics()
 - _Parameters of the Function: `test_db`, `trained_tree`_
