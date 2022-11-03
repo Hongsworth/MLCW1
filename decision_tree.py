@@ -161,6 +161,9 @@ def prune_tree(test_db, tree):
 
     col = tree.atrribute
     split_point = tree.value
+    root = tree
+
+    acc = evaluate(test_db, tree)
 
     sorted_db = sort_column(test_db, col)
 
@@ -177,6 +180,14 @@ def prune_tree(test_db, tree):
             tree.value = l_dataset[0][LABEL_COL]
         else:
             tree.value = r_dataset[0][LABEL_COL]
+        n_acc = evaluate(test_db, root)
+        if(n_acc > acc):
+            del tree.left, tree.right
+            return root
+        else:
+            tree.attribute = col
+            tree.value = split_point
+            
 
     if (tree.left is not None):
         prune_tree(l_dataset, tree.left)
