@@ -354,7 +354,19 @@ def flatten(list):
 
 def main(filename):
 
-    cumalative_conf_matrix = np.zeros((4, 4))
+    cumalative_conf_matrix_pruned = np.zeros((4, 4))
+    cumalative_conf_matrix_unpruned = np.zeros((4, 4))
+    
+    accuracy_unpruned = 0
+    recall_unpruned = []
+    precision_unpruned = []
+    f1_measure_unpruned = []
+    
+    accuracy_pruned = 0 
+    recall_pruned = []
+    precision_pruned = []
+    f1_measure_pruned = []
+    
     dataset = read_dataset(filename)
 
     # split data into 10 folds
@@ -363,7 +375,6 @@ def main(filename):
     for k in range(10):
         # pick k as test
         test_indices = split_indices[k]
-
         validate_indices = split_indices[k+1]
 
         # combine remaining splits as train
@@ -386,11 +397,21 @@ def main(filename):
             prune_tree(validate_indices, train_indices, trained_tree,
                        trained_tree, pruned)
 
-        cumalative_conf_matrix += conf_matrix
-
-    average_conf_matrix = cumalative_conf_matrix / 10
-
-    return average_conf_matrix
+        cumalative_conf_matrix_unpruned += conf_matrix
+    
+    # calculate averaged matrix for both pruned and unpruned data
+    average_conf_matrix_unpruned = cumalative_conf_matrix_unpruned / 10
+    average_conf_matrix_pruned = cumalative_conf_matrix_pruned / 10
+    
+    # get classification metrics for each averaged matrix
+    
+    accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, precision_unpruned, f1_measure_unpruned = 
+                                                                                    get_metrics(average_conf_matrix_unpruned)
+    accuracy_pruned, average_conf_matrix_pruned, recall_pruned, precision_pruned, f1_measure_pruned = 
+                                                                                    get_metrics(average_conf_matrix_pruned)
+        
+    return accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, precision_unpruned, f1_measure_unpruned, 
+                        accuracy_pruned, average_conf_matrix_pruned, recall_pruned, precision_pruned, f1_measure_pruned
 
 
 # __________________________________RUN CODE_______________________________
@@ -405,12 +426,38 @@ accuracy, conf_matrix = evaluate(dataset, tree)
 print(accuracy)
 
 """
-matrix = main(filename)
-print(matrix)
+accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, precision_unpruned, f1_measure_unpruned, accuracy_pruned, average_conf_matrix_pruned, 
+                                                                                        recall_pruned, precision_pruned, f1_measure_pruned = main(filename)
 
+print("Confusion Matrix and Metrics for Unpruned Tree")
+print("Confusion Matrix: ")
+print(average_conf_matrix_unpruned)
+print("Accuracy: ")
+print(accuracy_unpruned )
+print("Recall: ")
+print(recall_unpruned)
+print("Precision: ")
+print(precision_unpruned)
+print("F1 Measure: ")
+print(f1_measure_unpruned)
+
+
+print("Confusion Matrix and Metrics for Pruned Tree")
+print("Confusion Matrix: ")
+print(average_conf_matrix_pruned)
+print("Accuracy: ")
+print(accuracy_pruned )
+print("Recall: ")
+print(recall_pruned)
+print("Precision: ")
+print(precision_pruned)
+print("F1 Measure: ")
+print(f1_measure_pruned)
+
+
+"""
 filename = "wifi_db/noisy_dataset.txt"
 matrix = main(filename)
 print(matrix)
 
-# in each loop: train tree, evaluate unpruned tree, run prune function. ensure
-# we are aggregating the confusion matrix
+"""
