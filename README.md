@@ -15,9 +15,8 @@ Our decision tree can be run by running the decision_tree.py file, which will ou
 
 ## main()
 - _Parameters of the Function: `filename`_
-- _Values Returned:_
-
-TO DO: add some information here about the function
+- _Values Returned: All the averaged clasification metrics and confusion matrix for both the pruned and unpruned tree. _
+- The purpose of `main(filename)` is to tie together all the functions by carrying out the 10-fold cross validation and gathering the averaged classification metrics and confusion matrix after creating the pruned and unpruned tree. 
 
 ## decision_tree_learning()
 - _Parameters of the Function: `training_dataset`, `depth`_
