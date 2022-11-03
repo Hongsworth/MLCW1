@@ -13,3 +13,24 @@ This project contains code for the first coursework for the Introduction to Mach
 ## Documentation
 
 Our decision tree can be run by running the decision_tree.py file, which will output data for both our pruned and unpruned decision tree. Below is a directory of our functions, detailing what each function does.
+
+## main()
+
+## decision_tree_learning()
+
+## evaluate()
+
+## prune_tree()
+
+## get_metrics()
+
+## draw_tree()
+
+## How to Run Our Code:
+To run our code:
+- Add your dataset into `wifi_db` folder.
+- Open the `decision_tree.py` file.
+- Begin by replacing the filepath to the dataset, by reassiging the `filepath` variable found under the `RUN_CODE` section of the `decision_tree.py` file.
+- Run the `decision_tree.py` file and you should see the metrics for the pruned and unpruned tree be printed into the terminal. 
+- If you wish to print the visualisation of the decision tree, call the `draw_tree()` function in the `RUN_CODE` section and pass in the tree you wish to visualise as the parameter to the function.
+
