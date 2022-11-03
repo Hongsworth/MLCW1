@@ -3,9 +3,11 @@
 This project contains code for the first coursework for the Introduction to Machine Learning course. Below we have added instructions to help explain how to run our code.
 
 ## TO DO LIST
-- Complete report by filling in the correct values for the pruned data and by changing the depth values in the DEPTH ANALYSIS section
-- We also need to add the ouput tree visualisaion
-- Add information to the readme.md for draw_tree
+- In the report:
+  - Fill in the correct values for the pruned data 
+  - Add the depth values in the DEPTH ANALYSIS section
+  - Add the ouput tree visualisaion
+  - Add information to the readme.md for draw_tree
 - In the code:
   - Change how we test using the validation set. By testing all the validation sets in one go we are essentially testing the tree against the training data which will give us a high accuracy 
   - Output the depth of the pruned and unpruned tree
