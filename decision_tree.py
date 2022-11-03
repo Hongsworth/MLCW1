@@ -5,11 +5,9 @@ from numpy.random import default_rng
 
 seed = 60012
 rg = default_rng(seed)
-
-# ____________________________BUILDING TREE_________________________________
-
 LABEL_COL = 7
 
+# ____________________________BUILDING TREE_________________________________
 
 class Tree:
     def __init__(self):
@@ -120,7 +118,6 @@ def decision_tree_learning(training_dataset, depth):
 # ____________________________DRAWING TREE_________________________________
 
 DEPTH = 10
-
 
 def draw_tree(node, x, y, width):
     if node.attribute is None:
@@ -274,7 +271,7 @@ def find_recall(class_num, predicted_labels, actual_labels):
     total_class_samples = 0
     conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
 
-    correct_class_samples = conf_matrix[class_num, class_num]
+    correct_class_samples = conf_matrix[class_num - 1, class_num - 1 ]
 
     for sample in actual_labels:
         if sample == class_num:
@@ -291,7 +288,7 @@ def find_precision(class_num, predicted_labels, actual_labels):
     total_class_samples = 0
     conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
 
-    correct_class_samples = conf_matrix[class_num, class_num]
+    correct_class_samples = conf_matrix[class_num - 1 , class_num - 1]
 
     for sample in predicted_labels:
         if sample == class_num:
@@ -316,6 +313,10 @@ def find_F1(class_num, predicted_labels, actual_labels):
 def get_metrics(test_db, trained_tree):
     predicted_labels = []
     actual_labels = []
+    recall = []
+    precision = []
+    f1_measure = []
+  
     for data in test_db:
         # passes in test data into tree and tree produces an array of predicted
         # labels
@@ -326,10 +327,13 @@ def get_metrics(test_db, trained_tree):
     conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
 
     accuracy = find_accuracy(predicted_labels, actual_labels)
+  
     for x in range(1, 5):
-        find_recall(x, predicted_labels, actual_labels)
+        recall.append(find_recall(x, predicted_labels, actual_labels))
+        precision.append(find_precision(x, predicted_labels, actual_labels))
+        f1_measure.append(find_F1(x, predicted_labels, actual_labels))
 
-    return accuracy, conf_matrix
+    return accuracy, conf_matrix, recall, precision, f1_measure
 
 
 def main(filename):
