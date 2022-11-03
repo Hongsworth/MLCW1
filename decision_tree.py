@@ -356,7 +356,6 @@ def main(filename):
 
     cumalative_conf_matrix_pruned = np.zeros((4, 4))
     cumalative_conf_matrix_unpruned = np.zeros((4, 4))
-    split_cumalative_conf_matrix_pruned = np.zeros((4, 4))
 
     accuracy_unpruned = 0
     recall_unpruned = []
@@ -367,6 +366,18 @@ def main(filename):
     recall_pruned = []
     precision_pruned = []
     f1_measure_pruned = []
+
+    cumalative_accuracy_unpruned = 0
+    cumalative_recall_unpruned = []
+    cumalative_precision_unpruned = []
+    cumalative_f1_measure_unpruned = []
+ 
+    cumalative_accuracy_pruned = 0
+    cumalative_recall_pruned = []
+    cumalative_precision_pruned = []
+    cumalative_f1_measure_pruned = []
+
+
 
     dataset = read_dataset(filename)
 
@@ -406,12 +417,28 @@ def main(filename):
         accuracy_pruned, pruned_conf_matrix, recall_pruned, precision_pruned, f1_measure_pruned = get_metrics(combined_validate_indices, trained_tree)
         
         cumalative_conf_matrix_pruned += pruned_conf_matrix
-        
         cumalative_conf_matrix_unpruned += conf_matrix
+        cumalative_accuracy_unpruned += accuracy_unpruned
+        cumalative_accuracy_pruned += accuracy_pruned
+        cumalative_recall_unpruned += recall_unpruned
+        cumalative_recall_pruned += recall_pruned
+        cumalative_precision_unpruned += precision_unpruned
+        cumalative_precision_pruned += precision_pruned
+        cumalative_f1_measure_unpruned += f1_measure_unpruned
+        cumalative_f1_measure_pruned += f1_measure_pruned
+
 
     # calculate averaged matrix for both pruned and unpruned data
     average_conf_matrix_unpruned = cumalative_conf_matrix_unpruned / 10
     average_conf_matrix_pruned = cumalative_conf_matrix_pruned / 10
+    average_accuracy_unpruned = cumalative_accuracy_unpruned / 10
+    average_accuracy_pruned = cumalative_accuracy_pruned / 10
+    average_recall_unpruned = cumalative_recall_unpruned / 10
+    average_recall_pruned = cumalative_recall_pruned / 10
+    average_precision_unpruned = cumalative_precision_unpruned / 10 
+    average_precision_pruned = cumalative_precision_pruned / 10
+    average_f1_measure_unpruned = cumalative_f1_measure_unpruned / 10
+    average_f1_measure_pruned = cumalative_f1_measure_pruned / 10
 
     # get classification metrics for each averaged matrix
 
@@ -423,10 +450,10 @@ def main(filename):
     #     precision_pruned, f1_measure_pruned = \
     #     get_metrics(test_indices, average_conf_matrix_pruned)
 
-    return accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
-        precision_unpruned, f1_measure_unpruned, accuracy_pruned, \
-        average_conf_matrix_pruned, recall_pruned, precision_pruned, \
-        f1_measure_pruned
+    return average_accuracy_unpruned, average_conf_matrix_unpruned, average_recall_unpruned, \
+        average_precision_unpruned, average_f1_measure_unpruned, average_accuracy_pruned, \
+        average_conf_matrix_pruned, average_recall_pruned, average_precision_pruned, \
+        average_f1_measure_pruned
 
 
 # __________________________________RUN CODE_______________________________
