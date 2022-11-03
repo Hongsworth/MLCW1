@@ -87,7 +87,6 @@ def find_split(array):
                     highest_gain = curr_gain
                     l_dataset = array[:element]
                     r_dataset = array[element:]
-                    # TODO: Check if split is correct with the l and r dataset
                     split = (array[element][column])
                     b_column = column
     return l_dataset, r_dataset, split, b_column
@@ -170,7 +169,6 @@ def prune_tree(validate_db, train_db, tree, root, pruned):
 
     sorted_db = sort_column(train_db, col)
 
-    # TODO: Check is spliting the dataset is working correctly
     for i in range(len(sorted_db)):
         if sorted_db[i][col] == split_point:
             l_dataset = sorted_db[:i]
@@ -387,7 +385,6 @@ def main(filename):
             pruned = [False]
             prune_tree(validate_indices, train_indices, trained_tree,
                        trained_tree, pruned)
-            print("looped")
 
         cumalative_conf_matrix += conf_matrix
 
