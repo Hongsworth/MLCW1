@@ -119,6 +119,7 @@ def decision_tree_learning(training_dataset, depth):
 
 DEPTH = 10
 
+
 def draw_tree(node, x, y, width):
     if node.attribute is None:
         draw_leaf(node.value, x, y)
@@ -271,7 +272,7 @@ def find_recall(class_num, predicted_labels, actual_labels):
     total_class_samples = 0
     conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
 
-    correct_class_samples = conf_matrix[class_num - 1, class_num - 1 ]
+    correct_class_samples = conf_matrix[class_num - 1, class_num - 1]
 
     for sample in actual_labels:
         if sample == class_num:
@@ -288,7 +289,7 @@ def find_precision(class_num, predicted_labels, actual_labels):
     total_class_samples = 0
     conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
 
-    correct_class_samples = conf_matrix[class_num - 1 , class_num - 1]
+    correct_class_samples = conf_matrix[class_num - 1, class_num - 1]
 
     for sample in predicted_labels:
         if sample == class_num:
@@ -316,7 +317,7 @@ def get_metrics(test_db, trained_tree):
     recall = []
     precision = []
     f1_measure = []
-  
+
     for data in test_db:
         # passes in test data into tree and tree produces an array of predicted
         # labels
@@ -327,7 +328,7 @@ def get_metrics(test_db, trained_tree):
     conf_matrix = create_confusion_matrix(predicted_labels, actual_labels)
 
     accuracy = find_accuracy(predicted_labels, actual_labels)
-  
+
     for x in range(1, 5):
         recall.append(find_recall(x, predicted_labels, actual_labels))
         precision.append(find_precision(x, predicted_labels, actual_labels))
@@ -362,7 +363,6 @@ def main(filename):
                 continue
             train_indices = np.concatenate((train_indices, split_indices[i]),
                                            axis=0)
-            # train_indices = train_indices + split_indices[i]
 
         trained_tree, depth = decision_tree_learning(train_indices, 0)
         accuracy, conf_matrix = evaluate(test_indices, trained_tree)
