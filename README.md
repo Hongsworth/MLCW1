@@ -28,9 +28,9 @@ TO DO: add some information here about the function
 ## evaluate()
 - _Parameters of the Function: `test_db`, `trained_tree`_
 - _Values Returned: `accuracy`, `conf_matrix`_
-
-TO DO: add some information here about the function
-
+- `evaluate(test_db, trained_tree)` is a function that takes in the test dataset and the trained tree. 
+- Using the `eval_helper()` function, the `evaluate()` function generates an array of predicted labels for the test data.
+- The function then compares the predicted labels and actual labels of the test dataset to produce the accuracy and confusion matrix of the test
 
 ## prune_tree()
 - _Parameters of the Function:`validate_db`, `train_db`, `tree`, `root`, `pruned`_
