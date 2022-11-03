@@ -356,6 +356,7 @@ def main(filename):
 
     cumalative_conf_matrix_pruned = np.zeros((4, 4))
     cumalative_conf_matrix_unpruned = np.zeros((4, 4))
+    split_cumalative_conf_matrix_pruned = np.zeros((4, 4))
 
     accuracy_unpruned = 0
     recall_unpruned = []
@@ -375,7 +376,10 @@ def main(filename):
     for k in range(10):
         # pick k as test
         test_indices = split_indices[k]
-        validate_indices = split_indices[k+1]
+        if k == 9:
+            validate_indices = split_indices[0]
+        else:
+            validate_indices = split_indices[k+1]
 
         # combine remaining splits as train
         train_indices = None
@@ -389,7 +393,7 @@ def main(filename):
                                            axis=0)
 
         trained_tree, depth = decision_tree_learning(train_indices, 0)
-        accuracy, conf_matrix = evaluate(test_indices, trained_tree)
+        accuracy_unpruned, conf_matrix, recall_unpruned, precision_unpruned, f1_measure_unpruned = get_metrics(test_indices, trained_tree)
 
         pruned = [True]
         while pruned[0]:
@@ -397,6 +401,12 @@ def main(filename):
             prune_tree(validate_indices, train_indices, trained_tree,
                        trained_tree, pruned)
 
+        combined_validate_indices = np.concatenate((validate_indices, train_indices),axis = 0)
+        
+        accuracy_pruned, pruned_conf_matrix, recall_pruned, precision_pruned, f1_measure_pruned = get_metrics(combined_validate_indices, trained_tree)
+        
+        cumalative_conf_matrix_pruned += pruned_conf_matrix
+        
         cumalative_conf_matrix_unpruned += conf_matrix
 
     # calculate averaged matrix for both pruned and unpruned data
@@ -405,13 +415,13 @@ def main(filename):
 
     # get classification metrics for each averaged matrix
 
-    accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
-        precision_unpruned, f1_measure_unpruned = \
-        get_metrics(average_conf_matrix_unpruned)
+    # accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
+    #     precision_unpruned, f1_measure_unpruned = \
+    #     get_metrics(test_indices, average_conf_matrix_unpruned)
 
-    accuracy_pruned, average_conf_matrix_pruned, recall_pruned, \
-        precision_pruned, f1_measure_pruned = \
-        get_metrics(average_conf_matrix_pruned)
+    # accuracy_pruned, average_conf_matrix_pruned, recall_pruned, \
+    #     precision_pruned, f1_measure_pruned = \
+    #     get_metrics(test_indices, average_conf_matrix_pruned)
 
     return accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
         precision_unpruned, f1_measure_unpruned, accuracy_pruned, \
