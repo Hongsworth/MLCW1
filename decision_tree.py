@@ -357,6 +357,7 @@ def main(filename):
     cumalative_conf_matrix_pruned = np.zeros((4, 4))
     cumalative_conf_matrix_unpruned = np.zeros((4, 4))
 
+    depth_unpruned = 0 
     accuracy_unpruned = 0
     recall_unpruned = []
     precision_unpruned = []
@@ -366,7 +367,8 @@ def main(filename):
     recall_pruned = []
     precision_pruned = []
     f1_measure_pruned = []
-
+    
+    cumalative_depth_unpruned = 0 
     cumalative_accuracy_unpruned = 0
     cumalative_recall_unpruned = []
     cumalative_precision_unpruned = []
@@ -401,7 +403,7 @@ def main(filename):
             train_indices = np.concatenate((train_indices, split_indices[i]),
                                            axis=0)
 
-        trained_tree, depth = decision_tree_learning(train_indices, 0)
+        trained_tree, depth_unpruned = decision_tree_learning(train_indices, 0)
         accuracy_unpruned, conf_matrix, recall_unpruned, precision_unpruned, \
             f1_measure_unpruned = get_metrics(test_indices, trained_tree)
 
@@ -422,6 +424,8 @@ def main(filename):
         cumalative_conf_matrix_unpruned += conf_matrix
         cumalative_accuracy_unpruned += accuracy_unpruned
         cumalative_accuracy_pruned += accuracy_pruned
+        cumulative_depth_unpruned += depth_unpruned
+        
         if k == 0:
             cumalative_recall_unpruned = recall_unpruned
             cumalative_recall_pruned = recall_pruned
@@ -448,6 +452,8 @@ def main(filename):
     average_conf_matrix_pruned = cumalative_conf_matrix_pruned / 10
     average_accuracy_unpruned = cumalative_accuracy_unpruned / 10
     average_accuracy_pruned = cumalative_accuracy_pruned / 10
+    average_depth_unpruned = cumalative_depth_unpruned / 10
+    
     average_recall_unpruned = [x / 10 for x in cumalative_recall_unpruned]
     average_recall_pruned = [x / 10 for x in cumalative_recall_pruned]
     average_precision_unpruned = [x / 10 for x in
@@ -471,7 +477,8 @@ def main(filename):
         average_recall_unpruned, average_precision_unpruned, \
         average_f1_measure_unpruned, average_accuracy_pruned, \
         average_conf_matrix_pruned, average_recall_pruned, \
-        average_precision_pruned, average_f1_measure_pruned
+        average_precision_pruned, average_f1_measure_pruned, \
+        average_depth_unpruned
 
 
 # __________________________________RUN CODE_______________________________
@@ -489,9 +496,11 @@ print(accuracy)
 accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
     precision_unpruned, f1_measure_unpruned, accuracy_pruned, \
     average_conf_matrix_pruned, recall_pruned, precision_pruned, \
-    f1_measure_pruned = main(filename)
+    f1_measure_pruned, depth_unpruned = main(filename)
 
 print("Confusion Matrix and Metrics for Unpruned Tree")
+print("Depth of Tree: ")
+print(depth_unpruned)
 print("Confusion Matrix: ")
 print(average_conf_matrix_unpruned)
 print("Accuracy: ")
