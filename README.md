@@ -22,8 +22,10 @@ TO DO: add some information here about the function
 ## decision_tree_learning()
 - _Parameters of the Function: `training_dataset`, `depth`_
 - _Values Returned: `curr`, `max(l_depth, r_depth)`_
+- `ejkfekw` works by taking in a dataset and by recursively builiding a tree.
+- The `depth` variable is used to keep track of how deep the tree is and the function returns the total depth and the root node of the decision tree.
 
-TO DO: add some information here about the function
+
 
 ## evaluate()
 - _Parameters of the Function: `test_db`, `trained_tree`_
