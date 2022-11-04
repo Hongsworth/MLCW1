@@ -55,14 +55,17 @@ Our decision tree can be run by running the decision_tree.py file, which will ou
 ## draw_tree()
 - _Parameters of the Function: `node`, `x`, `y`, `width`_
 - _Values Returned: N/A_
-
-takes in the start x and y value of the graph we draw to - intially set to 0 
-and the width - how wide we darw rhe tree 
-check if we're at leaf and draw and return 
-node is the current node were drawing but intially is set to root 
-has helper functions 
-
-TO DO: add some information here about the function
+- The `draw_tree(node, x, y, width)` functions works in conjunction to other helper functions: 
+  - `draw_branch(attribute, value, x, y)`
+  - `draw_leaf(label, x, y)`
+  - `draw_line(x1, y1, x2, y2)`
+  - `draw_text(s, x, y)`
+- The `draw_tree(node, x, y, width)` works by drawing the tree onto a graph and therefore takes in the parameters:
+  - `x`, The x value where we begin to draw the tree. Intitally set this to 0.
+  - `y`, The y value where we begin to draw the tree. Intitally set this to 0.
+  - `width`, The width is how wide we want to draw the tree.
+  - `node`, The current node of the tree we are drawing. Intially set this to the root of the tree.
+- The way `draw_tree(node, x, y, width)` works is by traversing the tree and identifying the node we're at. It then calls the appropriate helper functions to draw the node. 
 
 ## How to Run Our Code:
 To run our code:
