@@ -2,6 +2,17 @@
 
 This project contains code for the first coursework for the Introduction to Machine Learning course. Below we have added instructions to help explain how to run our code.
 
+## TO DO LIST
+- In the report:
+  - Fill in the correct values for the pruned data 
+  - Add the depth values in the DEPTH ANALYSIS section
+  - Add the ouput tree visualisaion
+  - Add information to the readme.md for draw_tree
+- In the code:
+  - Change how we test using the validation set. By testing all the validation sets in one go we are essentially testing the tree against the training data which will give us a high accuracy 
+  - Output the depth of the pruned tree
+  - Output the visualisation of the unpruned decision tree trained on the clean dataset.
+  - Divide by 9 somewhere with regards to the confusion matrix for the pruned tree. We are out by a factor 
 
 ## Authors
 
@@ -15,15 +26,14 @@ Our decision tree can be run by running the decision_tree.py file, which will ou
 
 ## main()
 - _Parameters of the Function: `filename`_
-- _Values Returned:_
-
-TO DO: add some information here about the function
+- _Values Returned: All the averaged clasification metrics and confusion matrix for both the pruned and unpruned tree. _
+- The purpose of `main(filename)` is to tie together all the functions by carrying out the 10-fold cross validation and gathering the averaged classification metrics and confusion matrix after creating the pruned and unpruned tree. 
 
 ## decision_tree_learning()
 - _Parameters of the Function: `training_dataset`, `depth`_
 - _Values Returned: `curr`, `max(l_depth, r_depth)`_
-
-TO DO: add some information here about the function
+- `decision_tree_learning(training_dataset, depth)` works by taking in a dataset and by recursively builiding a tree.
+- The `depth` variable is used to keep track of how deep the tree is and the function returns the total depth and the root node of the decision tree.
 
 ## evaluate()
 - _Parameters of the Function: `test_db`, `trained_tree`_
@@ -34,10 +44,10 @@ TO DO: add some information here about the function
 
 ## prune_tree()
 - _Parameters of the Function:`validate_db`, `train_db`, `tree`, `root`, `pruned`_
-- _Values Returned:_
-
-TO DO: add some information here about the function
-
+- _Values Returned:N/A_
+- `prune_tree(validate_db, train_db, tree, root, pruned)` works by intially traversing to the bottom of the decison tree and by working bottom up.
+- The function removes the bottom-most node  of the tree and  then checks if perfomance of the tree has improved using the validation set. 
+- If the perfomance of tree has improved by removing the node, the function will keep the new version of the tree. If not, the function will replace the node back again. 
 
 ## get_metrics()
 - _Parameters of the Function: `test_db`, `trained_tree`_
