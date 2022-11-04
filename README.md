@@ -5,8 +5,6 @@ This project contains code for the first coursework for the Introduction to Mach
 ## TO DO LIST
 - In the report: 
   - Add the depth values in the DEPTH ANALYSIS section
-- In readme.md
-  - Add information for draw_tree
 - In the code:
   - Output the depth of the pruned tree
 
