@@ -3,16 +3,12 @@
 This project contains code for the first coursework for the Introduction to Machine Learning course. Below we have added instructions to help explain how to run our code.
 
 ## TO DO LIST
-- In the report:
-  - Fill in the correct values for the pruned data 
+- In the report: 
   - Add the depth values in the DEPTH ANALYSIS section
-  - Add the ouput tree visualisaion
-  - Add information to the readme.md for draw_tree
+- In readme.md
+  - Add information for draw_tree
 - In the code:
-  - Change how we test using the validation set. By testing all the validation sets in one go we are essentially testing the tree against the training data which will give us a high accuracy 
   - Output the depth of the pruned tree
-  - Output the visualisation of the unpruned decision tree trained on the clean dataset.
-  - Divide by 9 somewhere with regards to the confusion matrix for the pruned tree. We are out by a factor 
 
 ## Authors
 
@@ -59,6 +55,12 @@ Our decision tree can be run by running the decision_tree.py file, which will ou
 ## draw_tree()
 - _Parameters of the Function: `node`, `x`, `y`, `width`_
 - _Values Returned: N/A_
+
+takes in the start x and y value of the graph we draw to - intially set to 0 
+and the width - how wide we darw rhe tree 
+check if we're at leaf and draw and return 
+node is the current node were drawing but intially is set to root 
+has helper functions 
 
 TO DO: add some information here about the function
 
