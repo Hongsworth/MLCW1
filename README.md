@@ -2,12 +2,6 @@
 
 This project contains code for the first coursework for the Introduction to Machine Learning course. Below we have added instructions to help explain how to run our code.
 
-## TO DO LIST
-- In the report: 
-  - Add the depth values in the DEPTH ANALYSIS section
-  
-- general check  
-
 ## Authors
 
 - Daniel Ong
