@@ -56,6 +56,12 @@ Our decision tree can be run by running the decision_tree.py file, which will ou
 - _Parameters of the Function: `node`, `x`, `y`, `width`_
 - _Values Returned: N/A_
 
+takes in the start x and y value of the graph we draw to - intially set to 0 
+and the width - how wide we darw rhe tree 
+check if we're at leaf and draw and return 
+node is the current node were drawing but intially is set to root 
+has helper functions 
+
 TO DO: add some information here about the function
 
 ## How to Run Our Code:
