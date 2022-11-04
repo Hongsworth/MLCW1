@@ -28,7 +28,6 @@ def read_dataset(filepath):
     x = np.array(x)
     return x
 
-
 def entropy(array):
     if (len(array) == 0):
         return 0
@@ -58,13 +57,11 @@ def entropy(array):
 
     return ans
 
-
 def information_gain(array, split):
     main = entropy(array)
     split1 = entropy(array[:split])
     split2 = entropy(array[split:])
     return main - (split1 * split + split2 * (len(array) - split)) / len(array)
-
 
 def sort_column(array, column):
     return array[array[:, column].argsort()]
@@ -405,7 +402,7 @@ def main(filename):
             train_indices = np.concatenate((train_indices, split_indices[i]),
                                            axis=0)
 
-        trained_tree, depth = decision_tree_learning(train_indices, 0)
+        trained_tree, depth_unpruned = decision_tree_learning(train_indices, 0)
         accuracy_unpruned, conf_matrix, recall_unpruned, precision_unpruned, \
             f1_measure_unpruned = get_metrics(test_indices, trained_tree)
 
@@ -458,7 +455,7 @@ def main(filename):
                                    cumalative_f1_measure_unpruned]
     average_f1_measure_pruned = [x / 10 for x in cumalative_f1_measure_pruned]
 
-    depth = tree_depth(trained_tree)
+    depth_pruned = tree_depth(trained_tree)
     # get classification metrics for each averaged matrix
 
     # accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
@@ -473,12 +470,12 @@ def main(filename):
         average_recall_unpruned, average_precision_unpruned, \
         average_f1_measure_unpruned, average_accuracy_pruned, \
         average_conf_matrix_pruned, average_recall_pruned, \
-        average_precision_pruned, average_f1_measure_pruned,depth
+        average_precision_pruned, average_f1_measure_pruned, depth_pruned, depth_unpruned
 
 
 # __________________________________RUN CODE_______________________________
 
-filename = "wifi_db/clean_dataset.txt"
+filename = "wifi_db/noisy_dataset.txt"
 """
 dataset = read_dataset(filename)
 tree, depth = decision_tree_learning(dataset, 0)
@@ -491,7 +488,7 @@ print(accuracy)
 accuracy_unpruned, average_conf_matrix_unpruned, recall_unpruned, \
     precision_unpruned, f1_measure_unpruned, accuracy_pruned, \
     average_conf_matrix_pruned, recall_pruned, precision_pruned, \
-    f1_measure_pruned, depth = main(filename)
+    f1_measure_pruned, depth, depth_unpruned = main(filename)
 
 print("Confusion Matrix and Metrics for Unpruned Tree")
 print("Confusion Matrix: ")
@@ -504,6 +501,8 @@ print("Precision: ")
 print(precision_unpruned)
 print("F1 Measure: ")
 print(f1_measure_unpruned)
+print("Depth: ")
+print(depth_unpruned)
 
 
 print("Confusion Matrix and Metrics for Pruned Tree")
@@ -519,6 +518,14 @@ print("F1 Measure: ")
 print(f1_measure_pruned)
 print("Depth: ")
 print(depth)
+
+
+"""
+filename = "wifi_db/noisy_dataset.txt"
+matrix = main(filename)
+print(matrix)
+
+"""
 
 
 """
