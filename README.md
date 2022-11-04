@@ -16,7 +16,7 @@ This project contains code for the first coursework for the Introduction to Mach
 
 ## Documentation
 
-Our decision tree can be run by running the decision_tree.py file, which will output data for both our pruned and unpruned decision tree. Below is a directory of our functions, detailing what each function does.
+Our decision tree can be run by running the `decision_tree.py` file, which will output data for both our pruned and unpruned decision tree. Below is a directory of our functions, detailing what each function does.
 
 ## main()
 - _Parameters of the Function: `filename`_
